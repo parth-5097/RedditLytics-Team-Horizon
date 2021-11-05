@@ -14,7 +14,7 @@ import org.json.simple.parser.ParseException;
 
 public class KeyResultsController{
 
-    private String mainAPI = "https://api.pushshift.io/reddit/search/comment/?q=";
+    private String mainAPI = "https://api.pushshift.io/reddit/search/submission/?q=";
     HttpResponse res= null;
     List<String> l= new ArrayList<>();
     JSONObject bodyData = null;
@@ -23,7 +23,7 @@ public class KeyResultsController{
         String a = null;
         try{
             HttpClient client = HttpClient.newHttpClient();
-            HttpRequest req = HttpRequest.newBuilder().uri(URI.create(mainAPI+URLEncoder.encode(V,"UTF-8")+"&size=10&fields=body,author,subreddit&sort=DESC")).build();
+            HttpRequest req = HttpRequest.newBuilder().uri(URI.create(mainAPI+URLEncoder.encode(V,"UTF-8")+"&size=10&fields=selftext,author,subreddit&sort=DESC")).build();
             res = client.send(req, HttpResponse.BodyHandlers.ofString());
             Object obj = new JSONParser().parse(String.valueOf(res.body()));
             JSONObject test = (JSONObject) obj;

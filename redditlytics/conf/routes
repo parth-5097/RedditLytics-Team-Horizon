@@ -3,7 +3,7 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET       /                       controllers.HomeController.index_1()
+GET       /                        controllers.HomeController.index_1()
 GET        /:key                   controllers.HomeController.index(key: String)
 
 # Map static resources from the /public folder to the /assets URL path
