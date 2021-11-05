@@ -1,7 +1,7 @@
 package controllers;
 
 import play.mvc.*;
-
+import models.UserProfile;
 /**
  * This controller contains an action to handle HTTP requests
  * to the application's home page.
@@ -30,6 +30,12 @@ public class HomeController extends Controller {
     public Result getWordStats(String a) {
         Word word = new Word();
         return ok(views.html.word_stats.word_stats.render(word.bodyData(a)));
+    }
+
+    //****************
+    public Result getUserProfile(String username) {
+        UserProfile results = new UserProfile();
+        return ok(results.getData(username));
     }
 
 }
