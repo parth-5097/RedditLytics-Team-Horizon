@@ -1,7 +1,5 @@
 package controllers;
-
 import play.mvc.*;
-
 /**
  * This controller contains an action to handle HTTP requests
  * to the application's home page.
@@ -18,10 +16,16 @@ public class HomeController extends Controller {
      * <code>GET</code> request with a path of <code>/</code>.
      */
     public Result index(String key){
-        KeyResultsController kk = new KeyResultsController();
-        return ok(kk.getData(key));
+        KeyResultsController results = new KeyResultsController();
+        return ok(results.getData(key));
     }
     public Result index_1(){
         return ok(views.html.index.render());
     }
+
+    public Result getWordStats(String a) {
+        Word word = new Word();
+        return ok(views.html.word_stats.word_stats.render(word.bodyData(a)));
+    }
+
 }
