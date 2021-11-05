@@ -1,12 +1,15 @@
 package controllers;
+
 import play.mvc.*;
+
 /**
  * This controller contains an action to handle HTTP requests
  * to the application's home page.
  */
 public class HomeController extends Controller {
     private String data;
-    public HomeController(){
+
+    public HomeController() {
     }
 
     /**
@@ -15,11 +18,12 @@ public class HomeController extends Controller {
      * this method will be called when the application receives a
      * <code>GET</code> request with a path of <code>/</code>.
      */
-    public Result index(String key){
+    public Result getSearchResult(String key) {
         KeyResultsController results = new KeyResultsController();
         return ok(results.getData(key));
     }
-    public Result index_1(){
+
+    public Result index() {
         return ok(views.html.index.render());
     }
 

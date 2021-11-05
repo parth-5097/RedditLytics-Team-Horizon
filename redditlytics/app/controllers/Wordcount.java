@@ -1,8 +1,8 @@
 package controllers;
 
 public class Wordcount{
-    String key;
-    Integer value;
+    public String key;
+    public Integer value;
 
     public String getKey() {
         return key;
