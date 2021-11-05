@@ -1,0 +1,27 @@
+
+@(words: List[controllers.Wordcount])
+
+@main("Welcome to Play") {
+
+        <div style="text-align: center;color: cornflowerblue">
+            <h1>Word Statistics</h1>
+        </div>
+
+<table style="width:30%">
+    <thead>
+        <tr class="table100-head">
+            <th class="column1">Word</th>
+            <th class="column2">Count</th>
+        </tr>
+    </thead>
+    <tbody>
+    @for(person <- words){
+        <tr>
+            <td class="column1">@person.getKey()</td>
+            <td class="column2">@person.getValue()</td>
+        </tr>
+    }
+    </tbody>
+
+</table>
+}

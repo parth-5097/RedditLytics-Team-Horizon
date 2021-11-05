@@ -814,15 +814,23 @@ legend {
   min-height: 100vh;
   display: -ms-flexbox;
   display: flex;
+  flex-direction: column;
   -ms-flex-pack: center;
-      justify-content: center;
+  justify-content: center;
   -ms-flex-align: center;
-      align-items: center;
+  align-items: center;
   font-family: 'Poppins', sans-serif;
   background: url("../images/Searchs_004.png");
   background-size: cover;
   background-position: center center;
-  padding: 15px;
+  padding: 35px;
+}
+
+.key{
+  width: 930px;
+  padding: 5px 10px 5px 40px;
+  border-radius: 8px;
+  border: 1px;
 }
 
 .s004 form {
@@ -979,7 +987,7 @@ table {
     background: white;
     border-radius: 10px;
     overflow: hidden;
-    width: 50%;
+    width: 100%;
     margin: 0 auto;
     position: relative;
 }
