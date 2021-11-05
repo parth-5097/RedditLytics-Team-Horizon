@@ -12,7 +12,7 @@ import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class KeyResults{
+public class KeyResultsController{
 
     private String mainAPI = "https://api.pushshift.io/reddit/search/comment/?q=";
     HttpResponse res= null;
@@ -41,5 +41,4 @@ public class KeyResults{
         }
         return a;
     }
-
 }
