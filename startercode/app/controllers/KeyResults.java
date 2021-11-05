@@ -18,29 +18,28 @@ public class KeyResults{
     HttpResponse res= null;
     List<String> l= new ArrayList<>();
     JSONObject bodyData = null;
-    public static void main(String[] args) {
 
-
-    }
-
-    public List<String> getData(String V){
-
+    public String getData(String V){
+        String a = null;
         try{
             HttpClient client = HttpClient.newHttpClient();
-            HttpRequest req = HttpRequest.newBuilder().uri(URI.create(mainAPI+URLEncoder.encode(V,"UTF-8")+"&size=5&fields=body&sort=DESC")).build();
+            HttpRequest req = HttpRequest.newBuilder().uri(URI.create(mainAPI+URLEncoder.encode(V,"UTF-8")+"&size=10&fields=body,author,subreddit&sort=DESC")).build();
             res = client.send(req, HttpResponse.BodyHandlers.ofString());
             Object obj = new JSONParser().parse(String.valueOf(res.body()));
             JSONObject test = (JSONObject) obj;
             JSONArray array = (JSONArray) test.get("data");
             for (int i=0;i<array.size();i++) {
                 bodyData = (JSONObject) array.get(i);
-                String a = ((String) bodyData.get("body"));
-                l.add(a);
+                if(a == null) {
+                    a = bodyData.toString();
+                } else {
+                    a += "%5097%" + bodyData.toString();
+                }
             }
         } catch (Exception e){
             e.printStackTrace();
         }
-        return l;
+        return a;
     }
 
 }

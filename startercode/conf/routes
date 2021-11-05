@@ -3,8 +3,8 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET             /                   controllers.HomeController.index(request: Request)
-POST            /                   controllers.HomeController.createSearchData(request: Request)
+GET       /                       controllers.HomeController.index_1()
+GET        /:key                   controllers.HomeController.index(key: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
