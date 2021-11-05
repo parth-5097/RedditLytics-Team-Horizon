@@ -1,13 +1,16 @@
 package controllers;
 
 import play.mvc.*;
-import models.UserProfile;
+import models.*;
 /**
  * This controller contains an action to handle HTTP requests
  * to the application's home page.
  */
 public class HomeController extends Controller {
     private String data;
+    KeyResults results = new KeyResults();
+    Word word = new Word();
+    UserProfile profile = new UserProfile();
 
     public HomeController() {
     }
@@ -19,8 +22,8 @@ public class HomeController extends Controller {
      * <code>GET</code> request with a path of <code>/</code>.
      */
     public Result getSearchResult(String key) {
-        KeyResultsController results = new KeyResultsController();
-        return ok(results.getData(key));
+        data = results.getData(key);
+        return ok(data);
     }
 
     public Result index() {
@@ -28,14 +31,18 @@ public class HomeController extends Controller {
     }
 
     public Result getWordStats(String a) {
-        Word word = new Word();
-        return ok(views.html.word_stats.word_stats.render(word.bodyData(a)));
+        if(data != null){
+            return ok(views.html.word_stats.render(word.bodyData(data)));
+        } else {
+            data = results.getData(a);
+            return ok(views.html.word_stats.render(word.bodyData(data)));
+        }
+
     }
 
     //****************
     public Result getUserProfile(String username) {
-        UserProfile results = new UserProfile();
-        return ok(results.getData(username));
+        return ok(profile.getData(username));
     }
 
 }

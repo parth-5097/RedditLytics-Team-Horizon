@@ -32,13 +32,13 @@
         }).done(function (data) {
             let d = data.split("%5097%");
             let table = document.getElementById("records_table");
-            $.each(d, function (i, item) {
+            for(let i = 0;i < 10;i++){
                 let row = table.insertRow(0);
                 let cell1 = row.insertCell(0);
                 let cell2 = row.insertCell(1);
                 let cell3 = row.insertCell(2);
                 let cell4 = row.insertCell(3);
-                let it = JSON.parse(item);
+                let it = JSON.parse(d[i]);
                 cell1.innerHTML = new Date(it.created_utc).toLocaleDateString();
                 cell2.innerHTML = it.author;
                 cell3.innerHTML = `<a href="/subreddit/${it.subreddit}">${it.subreddit}</a>`;
@@ -46,7 +46,7 @@
                     window.location.href = "/subreddit/" + it.subreddit;
                 });
                 cell4.innerHTML = it.title;
-            });
+            }
         });
     });
 

@@ -1,4 +1,4 @@
-package controllers;
+package models;
 
 import play.mvc.*;
 
@@ -18,8 +18,7 @@ import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class KeyResultsController {
-
+public class KeyResults {
     private String mainAPI = "https://api.pushshift.io/reddit/search/submission/?q=";
     private String subRedditAPI = "https://api.pushshift.io/reddit/search/submission/?subreddit=";
     HttpResponse res = null;
@@ -30,7 +29,7 @@ public class KeyResultsController {
         String a = null;
         try {
             HttpClient client = HttpClient.newHttpClient();
-            HttpRequest req = HttpRequest.newBuilder().uri(URI.create(mainAPI + URLEncoder.encode(V, "UTF-8") + "&size=10&fields=title,created_utc,author,subreddit&sort=DESC")).build();
+            HttpRequest req = HttpRequest.newBuilder().uri(URI.create(mainAPI + URLEncoder.encode(V, "UTF-8") + "&size=250&fields=title,selftext,created_utc,author,subreddit&sort=DESC")).build();
             res = client.send(req, HttpResponse.BodyHandlers.ofString());
             Object obj = new JSONParser().parse(String.valueOf(res.body()));
             JSONObject test = (JSONObject) obj;
