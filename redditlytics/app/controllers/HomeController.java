@@ -29,13 +29,12 @@ public class HomeController extends Controller {
 
     public Result getWordStats(String a) {
         Word word = new Word();
-        return ok(views.html.word_stats.word_stats.render(word.bodyData(a)));
+        return ok(views.html.word_stats.render(word.bodyData(a)));
     }
 
-    //****************
     public Result getUserProfile(String username) {
         UserProfile results = new UserProfile();
-        return ok(results.getData(username));
+        return ok(views.html.user_profile.render(results.getData(username)));
     }
 
 }

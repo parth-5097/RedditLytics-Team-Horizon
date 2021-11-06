@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+@(userdata: List[UserData])
 
-</body>
-</html>
+@main("User Profile") {
+
+<div style="margin-top: 40px;width: 100%">
+    <table>
+        <thead>
+        <tr>
+            <th>Published on</th>
+            <th>Author</th>
+            <th>Author Fullname</th>
+            <th>Total awards received</th>
+            <th>SUBREDDIT</th>
+            <th>Content</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for(w <- userdata){
+        <tr>
+            <td>@w.getCreated_utc() </td>
+            <td>@w.getAuthor()</td>
+            <td>@w.getAuthorFullname()</td>
+            <td>@w.getTotal_awards_received()</td>
+            <td>@w.getSubreddit() </td>
+            <td>@w.getTitle()</td>
+        </tr>
+        }
+        </tbody>
+    </table>
+</div>
+}

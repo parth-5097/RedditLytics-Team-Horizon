@@ -40,7 +40,10 @@
                 let cell4 = row.insertCell(3);
                 let it = JSON.parse(item);
                 cell1.innerHTML = new Date(it.created_utc).toLocaleDateString();
-                cell2.innerHTML = it.author;
+                cell2.innerHTML = `<a href="/userprofile/${it.author}">${it.author}</a>`;
+                cell2.addEventListener("click",function(){
+                    window.location.href = "/userprofile/" + it.author;
+                });
                 cell3.innerHTML = `<a href="/subreddit/${it.subreddit}">${it.subreddit}</a>`;
                 cell3.addEventListener("click",function(){
                     window.location.href = "/subreddit/" + it.subreddit;
