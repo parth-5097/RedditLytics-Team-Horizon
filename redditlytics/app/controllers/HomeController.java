@@ -45,4 +45,7 @@ public class HomeController extends Controller {
         return ok(profile.getData(username));
     }
 
+    public Result getSubreddit(String word){
+        return ok(views.html.subreddit.render(results.getSubredditData(word)));
+    }
 }
