@@ -48,21 +48,26 @@ public class KeyResults {
         return a;
     }
 
-    public List<subreddit> getSubredditData(String V) {
-        List<subreddit> ar = new ArrayList<subreddit>();
-        try {
+    private JSONObject subredditAPI(String V){
+        JSONObject test = new JSONObject();
+        try{
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest req = HttpRequest.newBuilder().uri(URI.create(subRedditAPI + URLEncoder.encode(V, "UTF-8") + "&size=10&fields=title,created_utc,author,subreddit&sort=DESC")).build();
             res = client.send(req, HttpResponse.BodyHandlers.ofString());
             Object obj = new JSONParser().parse(String.valueOf(res.body()));
-            JSONObject test = (JSONObject) obj;
-            JSONArray array = (JSONArray) test.get("data");
-            for (int i = 0; i < array.size(); i++) {
-                var temp = (JSONObject) array.get(i);
-                ar.add(new subreddit((String) temp.get("author"), (Long) temp.get("created_utc"), (String) temp.get("title"), (String) temp.get("subreddit")));
-            }
-        } catch (Exception e) {
+            test = (JSONObject) obj;
+        }catch (Exception e) {
             e.printStackTrace();
+        }
+        return test;
+    }
+
+    public List<subreddit> getSubredditData(String key) {
+        List<subreddit> ar = new ArrayList<subreddit>();
+        JSONArray array = (JSONArray) this.subredditAPI(key).get("data");
+        for (int i = 0; i < array.size(); i++) {
+            var temp = (JSONObject) array.get(i);
+            ar.add(new subreddit((String) temp.get("author"), (Long) temp.get("created_utc"), (String) temp.get("title"), (String) temp.get("subreddit")));
         }
         return ar;
     }

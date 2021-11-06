@@ -30,6 +30,22 @@ public class HomeControllerTest extends WithApplication {
     }
 
     @Test
-    public void test
+    public void testSubReddit(){
+        Http.RequestBuilder request = new Http.RequestBuilder()
+                .method(GET)
+                .uri("/subreddit/gun");
 
+        Result result = route(app, request);
+        assertEquals(OK, result.status());
+    }
+
+    @Test
+    public void testSearchResultKey(){
+        Http.RequestBuilder request = new Http.RequestBuilder()
+                .method(GET)
+                .uri("/gun");
+
+        Result result = route(app, request);
+        assertEquals(OK, result.status());
+    }
 }
