@@ -1,4 +1,4 @@
-package controllers;
+package models;
 
 public class Wordcount{
     public String key;

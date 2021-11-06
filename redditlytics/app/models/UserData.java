@@ -9,14 +9,18 @@ public class UserData{
     long created_utc;
     String title;
     String subreddit;
+    long score;
+    double upvote_ratio;
 
-    public UserData(String e, long f, String a,long b,String c,String d ){
+    public UserData(String e, long f, String a,long b,String c,String d,long h,double i){
         author_fullname = e;
         total_awards_received = f;
         author = a;
         created_utc = b;
         title = c;
         subreddit = d;
+        score = h;
+        upvote_ratio = i;
     }
 
     public Date getCreated_utc() {
@@ -42,5 +46,13 @@ public class UserData{
 
     public String getAuthorFullname() {
         return author_fullname;
+    }
+
+    public long getScore() {
+        return score;
+    }
+
+    public double getUpvoteRatio() {
+        return upvote_ratio;
     }
 }
