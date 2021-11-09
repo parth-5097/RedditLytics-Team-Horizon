@@ -18,6 +18,13 @@ import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.*;
+import java.util.concurrent.CompletionStage;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
 public class KeyResults {
     private String mainAPI = "https://api.pushshift.io/reddit/search/submission/?q=";
     private String subRedditAPI = "https://api.pushshift.io/reddit/search/submission/?subreddit=";
