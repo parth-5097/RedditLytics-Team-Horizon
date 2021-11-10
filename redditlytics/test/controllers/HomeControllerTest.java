@@ -27,6 +27,27 @@ public class HomeControllerTest extends WithApplication {
 
         Result result = route(app, request);
         assertEquals(OK, result.status());
+        assertEquals("text/html", result.contentType().get());
+    }
+
+    @Test
+    public void getWordStatsTest() {
+        Http.RequestBuilder request = new Http.RequestBuilder()
+                .method(GET)
+                .uri("/search/car");
+
+        Result result = route(app, request);
+        assertEquals(OK, result.status());
+    }
+
+    @Test
+    public void getUserProfileTest() {
+        Http.RequestBuilder request = new Http.RequestBuilder()
+                .method(GET)
+                .uri("/userprofile/Rocky_Jigar");
+
+        Result result = route(app, request);
+        assertEquals(OK, result.status());
     }
 
 }
