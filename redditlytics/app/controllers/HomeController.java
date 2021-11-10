@@ -2,7 +2,7 @@ package controllers;
 
 import play.mvc.*;
 import models.*;
-
+import java.util.*;
 /**
  * This controller contains an action to handle HTTP requests
  * to the application's home page.
@@ -24,8 +24,6 @@ public class HomeController extends Controller {
      */
     public Result getSearchResult(String key) {
         data = results.getData(key);
-//        SentimentAnalysis sentimentAnalysis = new SentimentAnalysis();
-//        sentimentAnalysis.getSentimentResult(data);
         return ok(data);
     }
 
@@ -43,9 +41,16 @@ public class HomeController extends Controller {
 
     }
 
-
     public Result getUserProfile(String username) {
-        return ok(profile.getData(username));
+        List<UserData> userdata = profile.getData(username);
+        String author = userdata.get(0).getAuthor();
+        long totalAwardsReceived = userdata.get(0).getTotal_awards_received();
+
+        return ok(views.html.user_profile.render(userdata,author,totalAwardsReceived));
+    }
+
+    public Result getSubreddit(String word){
+        return ok(views.html.subreddit.render(results.getSubredditData(word)));
     }
 
 }

@@ -18,20 +18,26 @@ import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.*;
+import java.util.concurrent.CompletionStage;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
 public class KeyResults {
-    private String mainAPI = "https://api.pushshift.io/reddit/search/submission/?q=";
-    private String subRedditAPI = "https://api.pushshift.io/reddit/search/submission/?subreddit=";
+    String mainAPI = "https://api.pushshift.io/reddit/search/submission/?q=";
+    String subRedditAPI = "https://api.pushshift.io/reddit/search/submission/?subreddit=";
     HttpResponse res = null;
     List<String> l = new ArrayList<>();
     JSONObject bodyData = null;
 
-    public String getData(String word) {
+    public String getData(String V) {
         String a = null;
         try {
             HttpClient client = HttpClient.newHttpClient();
-            HttpRequest req = HttpRequest.newBuilder().uri(URI.create(mainAPI + URLEncoder.encode(word, "UTF-8") + "&size=250&fields=title,selftext,created_utc,author,subreddit&sort=DESC")).build();
+            HttpRequest req = HttpRequest.newBuilder().uri(URI.create(mainAPI + URLEncoder.encode(V, "UTF-8") + "&size=250&fields=title,selftext,created_utc,author,subreddit&sort=DESC")).build();
             res = client.send(req, HttpResponse.BodyHandlers.ofString());
-
             Object obj = new JSONParser().parse(String.valueOf(res.body()));
             JSONObject test = (JSONObject) obj;
             JSONArray array = (JSONArray) test.get("data");
@@ -46,25 +52,29 @@ public class KeyResults {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return a;
     }
 
-    public List<subreddit> getSubredditData(String V) {
-        List<subreddit> ar = new ArrayList<subreddit>();
-        try {
+    public JSONObject subredditAPI(String V){
+        JSONObject test = new JSONObject();
+        try{
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest req = HttpRequest.newBuilder().uri(URI.create(subRedditAPI + URLEncoder.encode(V, "UTF-8") + "&size=10&fields=title,created_utc,author,subreddit&sort=DESC")).build();
             res = client.send(req, HttpResponse.BodyHandlers.ofString());
             Object obj = new JSONParser().parse(String.valueOf(res.body()));
-            JSONObject test = (JSONObject) obj;
-            JSONArray array = (JSONArray) test.get("data");
-            for (int i = 0; i < array.size(); i++) {
-                var temp = (JSONObject) array.get(i);
-                ar.add(new subreddit((String) temp.get("author"), (Long) temp.get("created_utc"), (String) temp.get("title"), (String) temp.get("subreddit")));
-            }
-        } catch (Exception e) {
+            test = (JSONObject) obj;
+        }catch (Exception e) {
             e.printStackTrace();
+        }
+        return test;
+    }
+
+    public List<subreddit> getSubredditData(String key) {
+        List<subreddit> ar = new ArrayList<subreddit>();
+        JSONArray array = (JSONArray) this.subredditAPI(key).get("data");
+        for (int i = 0; i < array.size(); i++) {
+            var temp = (JSONObject) array.get(i);
+            ar.add(new subreddit((String) temp.get("author"), (Long) temp.get("created_utc"), (String) temp.get("title"), (String) temp.get("subreddit")));
         }
         return ar;
     }

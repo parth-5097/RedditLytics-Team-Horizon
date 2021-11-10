@@ -41,7 +41,6 @@ public class Word {
                 Object object = new JSONParser().parse(sliceData[i]);
                 JSONObject t = (JSONObject) object;
                 String a = ((String) t.get("selftext"));
-
                 a = a.replaceAll("[^a-zA-Z'0-9]+", " ").toLowerCase();
                 Annotation document = pipeline.process(a);
                 for (CoreMap sentence : document.get(SentencesAnnotation.class)) {
@@ -52,7 +51,8 @@ public class Word {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
         List<String> distinct_word_list = l.stream()
@@ -62,8 +62,6 @@ public class Word {
         for (String search : distinct_word_list) {
             uniquewords.add(new Wordcount(search, Collections.frequency(l, search)));
         }
-
-        //uniquewords = distinct_word_list.stream().map(o -> new Wordcount(o,Collections.frequency(l, search))).collect(Collectors.toList());
 
         List<Wordcount> sortedWord = uniquewords.stream()
                 .sorted(Comparator.comparingInt(Wordcount::getValue).reversed())
