@@ -1,17 +1,17 @@
 @main("Reddit-Lytics"){
 <div class="s004">
     <div>
-        <button style="margin: 0px 0px 150px 875px;
-                    border-radius: 10px;" type="button" id="word_stats">Word Statistics
+        <button id="btn" style="margin: 0px 0px 150px 875px;border-radius: 10px;"
+                type="button">Word Statistics
         </button>
     </div>
-    <div>
+    <div id="search-bar">
         <input class="key" id="key" name="key" type="text" placeholder="Type to search">
         <button style="border-radius: 8px" type="button" id="submit_button">Search</button>
     </div>
 
     <div style="margin-top: 40px;
-                width: 100%">
+                width: 100%" id="table-1">
         <table>
             <thead>
             <tr>
@@ -40,7 +40,10 @@
                 let cell4 = row.insertCell(3);
                 let it = JSON.parse(d[i]);
                 cell1.innerHTML = new Date(it.created_utc).toLocaleDateString();
-                cell2.innerHTML = it.author;
+                cell2.innerHTML = `<a href="/userprofile/${it.author}">${it.author}</a>`;
+                cell2.addEventListener("click",function(){
+                    window.location.href = "/userprofile/" + it.author;
+                });
                 cell3.innerHTML = `<a href="/subreddit/${it.subreddit}">${it.subreddit}</a>`;
                 cell3.addEventListener("click",function(){
                     window.location.href = "/subreddit/" + it.subreddit;
@@ -50,13 +53,16 @@
         });
     });
 
-    $("#word_stats").click(function () {
+    $("#btn").click(function () {
+        $("#btn").attr("disabled", true);
         $.ajax({
             url: "/search/" + document.getElementById("key").value
         }).done(function () {
+            $("#btn").attr("disabled", false);
             window.location.href = "/search/" + document.getElementById("key").value;
         });
     });
+
 
 </script>
 }

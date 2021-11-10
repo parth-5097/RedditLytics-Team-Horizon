@@ -10,7 +10,9 @@ GET       /search/:word      controllers.HomeController.getWordStats(word: Strin
 
 GET       /subreddit/:word   controllers.HomeController.getSubreddit(word:String)
 
-GET       /userprofile/:author      controllers.HomeController.getUserProfile(author: String)
+GET       /userprofile/:author   controllers.HomeController.getUserProfile(author: String)
+
+GET       /subreddit/:word   controllers.HomeController.getSubreddit(word:String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
