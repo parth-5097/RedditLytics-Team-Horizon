@@ -8,7 +8,9 @@ GET       /:key              controllers.HomeController.getSearchResult(key: Str
 
 GET       /search/:word      controllers.HomeController.getWordStats(word: String)
 
-GET       /userprofile/:author      controllers.HomeController.getUserProfile(author: String)
+GET       /subreddit/:word   controllers.HomeController.getSubreddit(word:String)
+
+GET       /userprofile/:author   controllers.HomeController.getUserProfile(author: String)
 
 GET       /subreddit/:word   controllers.HomeController.getSubreddit(word:String)
 
