@@ -14,6 +14,21 @@ public class HomeController extends Controller {
     UserProfile profile = new UserProfile();
 
     public HomeController() {
+//        ArrayList<String> tweets = new ArrayList<String>();
+//        NLP sa = new NLP();
+//        tweets.add("Multiple text classification datasets from NLP-progress\n" +
+//                "Multiple sentiment analysis datasets from NLP-progress\n" +
+//                "Yelp Data Set Challenge (8 million reviews of businesses from over 1 million users across 10 cities)\n" +
+//                "Kaggle Data Sets with text content (Kaggle is a company that hosts machine learning competitions)\n" +
+//                "Labeled Twitter data sets from (1) the SemEval 2018 Competition and (2) Sentiment 140 project\n" +
+//                "Amazon Product Review Data from UCSD. This is a very large and rich data set with review text, ratings, votes, product metdata, etc. The full dataset is extremely large - some of the smaller subsets provided may be better for class projects.\n" +
+//                "IMDB Moview Review Data with 50,000 movie reviews and binary sentiment labels\n" +
+//                "Well-known Movie review data for sentiment analysis, from Pang and Lee, Cornell\n" +
+//                "Product review data from Johns Hopkins University  (goal is to predict ratings on scale of 1 to 5)");
+//        sa.init();
+//        for(String tweet : tweets) {
+//            System.out.println(tweet + " : " + sa.findSentiment(tweet));
+//        }
     }
 
     /**
@@ -32,7 +47,7 @@ public class HomeController extends Controller {
     }
 
     public Result getWordStats(String a) {
-        if(data != null){
+        if (data != null) {
             return ok(views.html.word_stats.render(word.bodyData(data)));
         } else {
             data = results.getData(a);
@@ -46,7 +61,8 @@ public class HomeController extends Controller {
         return ok(profile.getData(username));
     }
 
-    public Result getSubreddit(String word){
+    public Result getSubreddit(String word) {
         return ok(views.html.subreddit.render(results.getSubredditData(word)));
     }
+
 }
