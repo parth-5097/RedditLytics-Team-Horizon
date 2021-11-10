@@ -29,7 +29,6 @@ public class Word {
     private String mainAPI = "https://api.pushshift.io/reddit/search/submission/?q=";
 
     public List<Wordcount> bodyData(String searchWord) {
-        System.out.println(searchWord);
         StanfordCoreNLP pipeline;
         String[] words;
         List<String> l = new ArrayList<>();

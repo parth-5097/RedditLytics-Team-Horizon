@@ -8,7 +8,7 @@ import models.*;
  * to the application's home page.
  */
 public class HomeController extends Controller {
-    private String data;
+    public String data;
     KeyResults results = new KeyResults();
     Word word = new Word();
     UserProfile profile = new UserProfile();

@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.IOException;
 import org.junit.Test;
 import play.Application;
 import play.inject.guice.GuiceApplicationBuilder;
@@ -30,6 +31,33 @@ public class HomeControllerTest extends WithApplication {
     }
 
     @Test
+    public void testRoutesAssets() throws IOException{
+        Http.RequestBuilder request = new Http.RequestBuilder()
+                .method(GET)
+                .uri("/assets/images/Searchs_004.png");
+
+        Result result = route(app, request);
+        assertEquals(OK, result.status());
+    }
+
+    @Test
+    public void testWordStat(){
+        Http.RequestBuilder request = new Http.RequestBuilder()
+                .method(GET)
+                .uri("/search/apple");
+        Result result = route(app, request);
+        assertEquals(OK, result.status());
+
+
+        Http.RequestBuilder request1 = new Http.RequestBuilder()
+                .method(GET)
+                .uri("/search/apple");
+
+        Result result1 = route(app, request1);
+        assertEquals(OK, result1.status());
+    }
+
+    @Test
     public void testSubReddit(){
         Http.RequestBuilder request = new Http.RequestBuilder()
                 .method(GET)
@@ -48,4 +76,6 @@ public class HomeControllerTest extends WithApplication {
         Result result = route(app, request);
         assertEquals(OK, result.status());
     }
+
+
 }

@@ -26,8 +26,8 @@ import javax.inject.Inject;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class KeyResults {
-    private String mainAPI = "https://api.pushshift.io/reddit/search/submission/?q=";
-    private String subRedditAPI = "https://api.pushshift.io/reddit/search/submission/?subreddit=";
+    String mainAPI = "https://api.pushshift.io/reddit/search/submission/?q=";
+    String subRedditAPI = "https://api.pushshift.io/reddit/search/submission/?subreddit=";
     HttpResponse res = null;
     List<String> l = new ArrayList<>();
     JSONObject bodyData = null;
@@ -55,7 +55,7 @@ public class KeyResults {
         return a;
     }
 
-    private JSONObject subredditAPI(String V){
+    public JSONObject subredditAPI(String V){
         JSONObject test = new JSONObject();
         try{
             HttpClient client = HttpClient.newHttpClient();
