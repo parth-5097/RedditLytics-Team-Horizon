@@ -54,13 +54,7 @@
     });
 
     $("#btn").click(function () {
-        $("#btn").attr("disabled", true);
-        $.ajax({
-            url: "/search/" + document.getElementById("key").value
-        }).done(function () {
-            $("#btn").attr("disabled", false);
-            window.location.href = "/search/" + document.getElementById("key").value;
-        });
+        window.location.href = "/search/" + document.getElementById("key").value;
     });
 
 

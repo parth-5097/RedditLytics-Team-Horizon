@@ -52,7 +52,6 @@ public class Word {
                 }
             }
         } catch (ParseException e) {
-            e.printStackTrace();
         }
 
         List<String> distinct_word_list = l.stream()

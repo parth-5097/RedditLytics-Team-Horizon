@@ -1,8 +1,6 @@
 package models;
 
 import org.junit.Test;
-import play.Application;
-import play.inject.guice.GuiceApplicationBuilder;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.test.WithApplication;
@@ -12,14 +10,9 @@ import static play.test.Helpers.GET;
 import static play.test.Helpers.route;
 import java.util.Date;
 
-public class subredditTest extends WithApplication {
+public class subredditTest {
     long created_utc = 1636401986301L;
     private subreddit test = new subreddit("Parthiv",created_utc,"This is the sbreddit testing title", "subreddit-test");
-
-    @Override
-    protected Application provideApplication() {
-        return new GuiceApplicationBuilder().build();
-    }
 
     @Test
     public void getCreated_utcTest() {

@@ -3,11 +3,13 @@ package controllers;
 import play.mvc.*;
 import models.*;
 import java.util.*;
+import java.util.concurrent.*;
 /**
  * This controller contains an action to handle HTTP requests
  * to the application's home page.
  */
 public class HomeController extends Controller {
+    private String key;
     private String data;
     KeyResults results = new KeyResults();
     Word word = new Word();
@@ -38,6 +40,7 @@ public class HomeController extends Controller {
      * <code>GET</code> request with a path of <code>/</code>.
      */
     public Result getSearchResult(String key) {
+        this.key = key;
         data = results.getData(key);
         return ok(data);
     }
@@ -46,14 +49,18 @@ public class HomeController extends Controller {
         return ok(views.html.index.render());
     }
 
-    public Result getWordStats(String a) {
-        if (data != null) {
-            return ok(views.html.word_stats.render(word.bodyData(data)));
+    public CompletionStage<Result> getWordStats(String a) {
+        if(data != null && key == a){
+            return CompletableFuture
+                    .supplyAsync(() -> word.bodyData(data))
+                    .thenApply(i -> ok(views.html.word_stats.render(i)));
         } else {
+            key = a;
             data = results.getData(a);
-            return ok(views.html.word_stats.render(word.bodyData(data)));
+            return CompletableFuture
+                    .supplyAsync(() -> word.bodyData(data))
+                    .thenApply(i -> ok(views.html.word_stats.render(i)));
         }
-
     }
 
     public Result getUserProfile(String username) {

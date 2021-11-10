@@ -82,7 +82,7 @@ public class HomeControllerTest extends WithApplication {
         Http.RequestBuilder request = new Http.RequestBuilder()
                 .method(GET)
                 .uri("/userprofile/jreddit4321");
-        System.out.println("Here : " + request);
+
         Result result = route(app, request);
         assertEquals(OK, result.status());
     }
