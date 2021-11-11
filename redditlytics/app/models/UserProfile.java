@@ -30,7 +30,6 @@ public class UserProfile {
             Object obj = new JSONParser().parse(String.valueOf(res.body()));
             test = (JSONObject) obj;
         }catch (Exception e) {
-            e.printStackTrace();
         }
         return test;
     }
@@ -40,7 +39,9 @@ public class UserProfile {
         JSONArray array = (JSONArray) this.getUserData(username).get("data");
         for (int i = 0; i < array.size(); i++) {
             var temp = (JSONObject) array.get(i);
-            ar.add(new UserData((String) temp.get("author_fullname"), (Long) temp.get("total_awards_received"), (String) temp.get("author"), (Long) temp.get("created_utc"), (String) temp.get("title"), (String) temp.get("subreddit"),(Long) temp.get("score"),(Double) temp.get("upvote_ratio")));
+            try{
+                ar.add(new UserData((String) temp.get("author_fullname"), (Long) temp.get("total_awards_received"), (String) temp.get("author"), (Long) temp.get("created_utc"), (String) temp.get("title"), (String) temp.get("subreddit"),(Long) temp.get("score"),(Double) temp.get("upvote_ratio")));
+            }catch (Exception e){}
         }
         return ar;
     }
