@@ -30,7 +30,6 @@ public class NLP {
                     .get(CoreAnnotations.SentencesAnnotation.class)) {
                 Tree tree = sentence
                         .get(SentimentAnnotatedTree.class);
-                System.out.println("Sentiment Score: " + RNNCoreAnnotations.getPredictedClass(tree));
                 int sentiment = RNNCoreAnnotations.getPredictedClass(tree);
                 SimpleMatrix sentiment_new = RNNCoreAnnotations.getPredictions(tree);
                 String partText = sentence.toString();
