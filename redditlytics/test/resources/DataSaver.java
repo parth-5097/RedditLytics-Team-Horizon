@@ -1,6 +1,7 @@
 package models;
 
 import javax.inject.Inject;
+import java.util.*;
 
 public class DataSaver {
     private KeyResults apiClient;
