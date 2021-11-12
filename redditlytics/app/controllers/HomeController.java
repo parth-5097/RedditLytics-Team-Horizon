@@ -20,7 +20,7 @@ public class HomeController extends Controller {
     private String key;
     private String data;
     KeyResults results = new KeyResults();
-    NLP sa = new NLP();
+    SentimentAnalyzer sa = new SentimentAnalyzer();
     Word word = new Word();
     UserProfile profile = new UserProfile();
 

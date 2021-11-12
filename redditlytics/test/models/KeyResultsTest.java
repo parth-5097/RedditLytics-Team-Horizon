@@ -30,9 +30,7 @@ public class KeyResultsTest extends Mockito{
     @Before
     public void ResultString(){
         KeyResults keyResults  = mock(KeyResults.class);
-
         when(keyResults.getData("apple")).thenReturn("Hello world");
-
         d = new DataSaver(keyResults);
     }
 

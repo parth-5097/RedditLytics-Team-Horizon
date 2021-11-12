@@ -49,12 +49,14 @@ public class HomeControllerTest extends WithApplication {
         assertEquals(OK, result.status());
 
 
+
         Http.RequestBuilder request1 = new Http.RequestBuilder()
                 .method(GET)
                 .uri("/search/apple");
 
         Result result1 = route(app, request1);
         assertEquals(OK, result1.status());
+
     }
 
     @Test
