@@ -20,3 +20,11 @@ jacocoExcludes in Test := Seq(
   "router.Routes*",
   "*.routes*"
 )
+
+libraryDependencies ++= Seq(
+  cacheApi
+)
+
+libraryDependencies ++= Seq(
+  caffeine
+)
