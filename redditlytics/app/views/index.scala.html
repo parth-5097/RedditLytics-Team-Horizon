@@ -1,7 +1,7 @@
 @main("Reddit-Lytics"){
 <div class="s004">
     <div>
-        <button id="btn" style="margin: 0px 0px 150px 875px;border-radius: 10px;"
+        <button id="btn"
                 type="button">Word Statistics
         </button>
     </div>
@@ -59,9 +59,9 @@
             cell5.style = "font-size:20px";
             cell5.innerHTML = new String("Search Term : " + document.getElementById("key").value).bold()+"   (Sentiment Analyser is running....)";
 
-            for(let i = 0;i < d.length;i++){
-                getNLPData(JSON.parse(d[i]).selftext,cell5);
-            }
+<!--            for(let i = 0;i < 60;i++){-->
+<!--                getNLPData(JSON.parse(d[i]).selftext,cell5);-->
+<!--            }-->
         });
     });
 
@@ -88,7 +88,5 @@
             });
         }
     }
-
-
 </script>
 }

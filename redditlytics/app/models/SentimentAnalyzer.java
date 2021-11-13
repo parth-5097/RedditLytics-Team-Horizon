@@ -11,7 +11,7 @@ import edu.stanford.nlp.sentiment.SentimentCoreAnnotations.SentimentAnnotatedTre
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.util.CoreMap;
 
-public class NLP {
+public class SentimentAnalyzer {
     static StanfordCoreNLP pipeline;
 
     public static void init() {
@@ -31,6 +31,7 @@ public class NLP {
                 Tree tree = sentence
                         .get(SentimentAnnotatedTree.class);
                 int sentiment = RNNCoreAnnotations.getPredictedClass(tree);
+                System.out.println(sentiment);
                 SimpleMatrix sentiment_new = RNNCoreAnnotations.getPredictions(tree);
                 String partText = sentence.toString();
                 if (partText.length() > longest) {

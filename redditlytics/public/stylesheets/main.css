@@ -820,9 +820,10 @@ legend {
   -ms-flex-align: center;
   align-items: center;
   font-family: 'Poppins', sans-serif;
-  background: url("../images/Searchs_004.png");
-  background-size: cover;
-  background-position: center center;
+  background: url("../images/horizon.svg");
+  background-repeat: no-repeat;
+  background-position: top;
+  background-color: #E5E5E5;
   padding: 35px;
 }
 
@@ -831,6 +832,8 @@ legend {
   padding: 5px 10px 5px 40px;
   border-radius: 8px;
   border: 1px;
+  border-style: solid;
+  border-color: #E5E5E5;
 }
 
 .s004 form {
@@ -994,12 +997,16 @@ table {
 table * {
     position: relative;
 }
+table th {
+    color: white;
+}
+
 table td, table th {
     padding-left: 8px;
 }
 table thead tr {
     height: 60px;
-    background: green;
+    background: black;
 }
 table tbody tr {
     height: 50px;
@@ -1054,4 +1061,45 @@ tbody tr:hover {
 
 .column2 {
     width: 160px;
+}
+
+.circle {
+  width: 100px;
+  height: 100px;
+  border: none;
+  border-radius: 100px;
+  background: #0069eb;
+  color: #fff;
+  font-size: 16px;
+ }
+
+#btn:hover {
+      letter-spacing: 0.1em;
+}
+
+#btn {
+      margin: 100px 0px 150px 995px;
+      font-family: 'Muli', sans-serif;
+      -webkit-transition: 0.15s all ease-in-out;
+      -o-transition: 0.15s all ease-in-out;
+      transition: 0.15s all ease-in-out;
+      cursor: pointer;
+      border-radius: 100px;
+      font-size: 16px;
+      border-color: black;
+}
+
+#submit_button:hover {
+      cursor: pointer;
+}
+
+#submit_button{
+       font-family: 'Muli', sans-serif;
+      -webkit-transition: 0.15s all ease-in-out;
+      -o-transition: 0.15s all ease-in-out;
+      transition: 0.15s all ease-in-out;
+      cursor: pointer;
+      border-radius: 100px;
+      font-size: 16px;
+      border-color: black;
 }

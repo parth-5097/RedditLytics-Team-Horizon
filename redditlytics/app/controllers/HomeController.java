@@ -2,10 +2,14 @@ package controllers;
 
 import play.mvc.*;
 import models.*;
+import akka.Done;
 
 import java.util.*;
 import java.util.concurrent.*;
 import play.libs.Json;
+
+import play.cache.*;
+import javax.inject.Inject;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.json.simple.*;
@@ -17,48 +21,22 @@ import org.json.simple.parser.ParseException;
  * to the application's home page.
  */
 public class HomeController extends Controller {
-    private String key;
-    private String data;
+    private AsyncCacheApi cache;
+    private String CacheKey = "Index";
+    String key;
+    String data;
     KeyResults results = new KeyResults();
-    NLP sa = new NLP();
+    SentimentAnalyzer sa = new SentimentAnalyzer();
     Word word = new Word();
     UserProfile profile = new UserProfile();
 
-    public HomeController() {
+    public HomeController(){
         sa.init();
-//        ArrayList<String> tweets = new ArrayList<String>();
-//        NLP sa = new NLP();
-//        tweets.add("Multiple text classification datasets from NLP-progress\n" +
-//                "Multiple sentiment analysis datasets from NLP-progress\n" +
-//                "Yelp Data Set Challenge (8 million reviews of businesses from over 1 million users across 10 cities)\n" +
-//                "Kaggle Data Sets with text content (Kaggle is a company that hosts machine learning competitions)\n" +
-//                "Labeled Twitter data sets from (1) the SemEval 2018 Competition and (2) Sentiment 140 project\n" +
-//                "Amazon Product Review Data from UCSD. This is a very large and rich data set with review text, ratings, votes, product metdata, etc. The full dataset is extremely large - some of the smaller subsets provided may be better for class projects.\n" +
-//                "IMDB Moview Review Data with 50,000 movie reviews and binary sentiment labels\n" +
-//                "Well-known Movie review data for sentiment analysis, from Pang and Lee, Cornell\n" +
-//                "Product review data from Johns Hopkins University  (goal is to predict ratings on scale of 1 to 5)"+
-//                "Multiple text classification datasets from NLP-progress\n" +
-//                "Multiple sentiment analysis datasets from NLP-progress\n" +
-//                "Yelp Data Set Challenge (8 million reviews of businesses from over 1 million users across 10 cities)\n" +
-//                "Kaggle Data Sets with text content (Kaggle is a company that hosts machine learning competitions)\n" +
-//                "Labeled Twitter data sets from (1) the SemEval 2018 Competition and (2) Sentiment 140 project\n" +
-//                "Amazon Product Review Data from UCSD. This is a very large and rich data set with review text, ratings, votes, product metdata, etc. The full dataset is extremely large - some of the smaller subsets provided may be better for class projects.\n" +
-//                "IMDB Moview Review Data with 50,000 movie reviews and binary sentiment labels\n" +
-//                "Well-known Movie review data for sentiment analysis, from Pang and Lee, Cornell\n" +
-//                "Product review data from Johns Hopkins University  (goal is to predict ratings on scale of 1 to 5)"+
-//                "Multiple text classification datasets from NLP-progress\n" +
-//                "Multiple sentiment analysis datasets from NLP-progress\n" +
-//                "Yelp Data Set Challenge (8 million reviews of businesses from over 1 million users across 10 cities)\n" +
-//                "Kaggle Data Sets with text content (Kaggle is a company that hosts machine learning competitions)\n" +
-//                "Labeled Twitter data sets from (1) the SemEval 2018 Competition and (2) Sentiment 140 project\n" +
-//                "Amazon Product Review Data from UCSD. This is a very large and rich data set with review text, ratings, votes, product metdata, etc. The full dataset is extremely large - some of the smaller subsets provided may be better for class projects.\n" +
-//                "IMDB Moview Review Data with 50,000 movie reviews and binary sentiment labels\n" +
-//                "Well-known Movie review data for sentiment analysis, from Pang and Lee, Cornell\n" +
-//                "Product review data from Johns Hopkins University  (goal is to predict ratings on scale of 1 to 5)");
-//        sa.init();
-//        for(String tweet : tweets) {
-//            System.out.println(tweet + " : " + sa.findSentiment(tweet));
-//        }
+    }
+
+    @Inject
+    public HomeController(AsyncCacheApi cache) {
+        this.cache = cache;
     }
 
     /**
@@ -71,7 +49,10 @@ public class HomeController extends Controller {
         this.key = key;
         return CompletableFuture
                 .supplyAsync(() -> results.getData(key))
-                .thenApply(i -> ok(i));
+                .thenApply(i -> {
+                    CompletionStage<Done> result = cache.set(CacheKey, i);
+                    return ok(i);
+                });
     }
 
     public CompletionStage<Result> getSentimentResult(Http.Request request){
@@ -83,8 +64,15 @@ public class HomeController extends Controller {
                 });
     }
 
-    public Result index() {
-        return ok(views.html.index.render());
+    public CompletionStage<Result> index() {
+        return CompletableFuture
+                .supplyAsync(() -> {
+                    CompletionStage<Optional<Object>> data = cache.get(CacheKey);
+                    return data;
+                })
+                .thenApply(i -> {
+                    return ok(views.html.index.render());
+                });
     }
 
     public CompletionStage<Result> getWordStats(String a) {
@@ -117,5 +105,4 @@ public class HomeController extends Controller {
                 .supplyAsync(() -> results.getSubredditData(word))
                 .thenApply(i -> ok(views.html.subreddit.render(i)));
     }
-
 }

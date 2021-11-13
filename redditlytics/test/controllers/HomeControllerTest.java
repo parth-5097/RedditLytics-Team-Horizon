@@ -42,6 +42,7 @@ public class HomeControllerTest extends WithApplication {
 
     @Test
     public void testWordStat(){
+
         Http.RequestBuilder request = new Http.RequestBuilder()
                 .method(GET)
                 .uri("/search/apple");
@@ -55,6 +56,18 @@ public class HomeControllerTest extends WithApplication {
 
         Result result1 = route(app, request1);
         assertEquals(OK, result1.status());
+
+
+    }
+
+
+    @Test
+    public void WordstatTest(){
+
+        HomeController homeController = new HomeController();
+        homeController.data = "apple";
+        homeController.key = "apple";
+        homeController.getWordStats("apple");
     }
 
     @Test
@@ -87,5 +100,14 @@ public class HomeControllerTest extends WithApplication {
         assertEquals(OK, result.status());
     }
 
+    @Test
+    public void testSentiment(){
+        Http.RequestBuilder request = new Http.RequestBuilder()
+                .method(GET)
+                .uri("/sentiment");
+
+        Result result = route(app, request);
+        assertEquals(OK, result.status());
+    }
 
 }
