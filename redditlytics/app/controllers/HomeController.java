@@ -30,12 +30,11 @@ public class HomeController extends Controller {
     Word word = new Word();
     UserProfile profile = new UserProfile();
 
-    public HomeController(){
-        sa.init();
-    }
+    public HomeController(){}
 
     @Inject
     public HomeController(AsyncCacheApi cache) {
+        sa.init();
         this.cache = cache;
     }
 
@@ -57,8 +56,9 @@ public class HomeController extends Controller {
 
     public CompletionStage<Result> getSentimentResult(Http.Request request){
         JsonNode json = request.body().asJson();
+        String tweet = String.valueOf(json.get("text"));
         return CompletableFuture
-                .supplyAsync(() -> sa.findSentiment(String.valueOf(json.get("text"))))
+                .supplyAsync(() -> sa.findSentiment(tweet))
                 .thenApply(i -> {
                     return ok(String.valueOf(i));
                 });

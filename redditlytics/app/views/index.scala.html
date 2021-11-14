@@ -59,8 +59,12 @@
             cell5.style = "font-size:20px";
             cell5.innerHTML = new String("Search Term : " + document.getElementById("key").value).bold()+"   (Sentiment Analyser is running....)";
 
+            let timer = 150;
+            let current_time = 100;
             for(let i = 0;i < 60;i++){
-                getNLPData(JSON.parse(d[i]).selftext,cell5);
+                setTimeout(function(){
+                    getNLPData(JSON.parse(d[i]).selftext,cell5);
+                },current_time + (timer*i));
             }
         });
     });

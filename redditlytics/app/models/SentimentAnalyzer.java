@@ -31,7 +31,6 @@ public class SentimentAnalyzer {
                 Tree tree = sentence
                         .get(SentimentAnnotatedTree.class);
                 int sentiment = RNNCoreAnnotations.getPredictedClass(tree);
-                System.out.println(sentiment);
                 SimpleMatrix sentiment_new = RNNCoreAnnotations.getPredictions(tree);
                 String partText = sentence.toString();
                 if (partText.length() > longest) {
