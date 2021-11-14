@@ -2,6 +2,13 @@ package models;
 
 import java.util.Date;
 
+
+/**
+ * <p>The model is developed to store Author Data.</p>
+ * <p>The model used getters methods to access Author data outside of class or in any other class.</p>
+ *
+ * @author Shubham Bhaderi
+ */
 public class UserData{
     String author;
     String author_fullname;
