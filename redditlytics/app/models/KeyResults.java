@@ -50,7 +50,6 @@ public class KeyResults {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return a;
     }
@@ -64,7 +63,6 @@ public class KeyResults {
             Object obj = new JSONParser().parse(String.valueOf(res.body()));
             test = (JSONObject) obj;
         }catch (Exception e) {
-            e.printStackTrace();
         }
         return test;
     }

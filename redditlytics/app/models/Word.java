@@ -34,6 +34,7 @@ public class Word {
         List<String> l = new ArrayList<>();
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma");
+
         pipeline = new StanfordCoreNLP(props, false);
         try {
             String[] sliceData = searchWord.split("%5097%");
@@ -52,7 +53,6 @@ public class Word {
                 }
             }
         } catch (ParseException e) {
-            e.printStackTrace();
         }
 
         List<String> distinct_word_list = l.stream()

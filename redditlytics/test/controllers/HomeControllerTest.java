@@ -55,6 +55,13 @@ public class HomeControllerTest extends WithApplication {
 
         Result result1 = route(app, request1);
         assertEquals(OK, result1.status());
+
+        Http.RequestBuilder request2 = new Http.RequestBuilder()
+                .method(GET)
+                .uri("/search/car");
+
+        Result result2 = route(app, request2);
+        assertEquals(OK, result2.status());
     }
 
     @Test
@@ -82,7 +89,7 @@ public class HomeControllerTest extends WithApplication {
         Http.RequestBuilder request = new Http.RequestBuilder()
                 .method(GET)
                 .uri("/userprofile/jreddit4321");
-        System.out.println("Here : " + request);
+
         Result result = route(app, request);
         assertEquals(OK, result.status());
     }

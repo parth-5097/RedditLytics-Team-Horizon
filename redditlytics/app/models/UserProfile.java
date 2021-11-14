@@ -30,7 +30,6 @@ public class UserProfile {
             Object obj = new JSONParser().parse(String.valueOf(res.body()));
             test = (JSONObject) obj;
         }catch (Exception e) {
-            e.printStackTrace();
         }
         return test;
     }
