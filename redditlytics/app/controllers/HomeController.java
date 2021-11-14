@@ -2,6 +2,7 @@
 package controllers;
 import play.mvc.*;
 import models.*;
+import businesslogic.*;
 import akka.Done;
 import java.util.*;
 import java.util.concurrent.*;
@@ -16,8 +17,6 @@ import org.json.simple.parser.ParseException;
  * This controller contains an action to handle HTTP requests
  * to the application's home page.
  *
- * @author Group development
- *
  * The Link to index page function named 'index':{@link index}
  * The Link to word search function named 'getSearchResult':{@link getSearchResult}
  * The Link to sentiment analysis function named 'getSentimentResult':{@link getSentimentResult}
@@ -25,6 +24,8 @@ import org.json.simple.parser.ParseException;
  * The Link to word statistics function named 'getWordStats':{@link getWordStats}
  * The Link to search user profile function named 'getUserProfile':{@link getUserProfile}
  * The Link to search subrediit submission function named 'getSubreddit':{@link getSubreddit}
+ *
+ * @author Group development
  */
 public class HomeController extends Controller {
     private AsyncCacheApi cache;

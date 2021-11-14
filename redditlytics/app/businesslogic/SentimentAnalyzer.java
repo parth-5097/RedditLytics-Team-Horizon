@@ -1,4 +1,4 @@
-package models;
+package businesslogic;
 
 import java.util.Properties;
 import org.ejml.simple.SimpleMatrix;

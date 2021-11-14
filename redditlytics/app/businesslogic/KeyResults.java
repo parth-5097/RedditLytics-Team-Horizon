@@ -1,6 +1,8 @@
-package models;
+package businesslogic;
 
 import play.mvc.*;
+
+import models.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -10,14 +12,18 @@ import java.net.http.HttpResponse;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import play.api.libs.json.*;
+
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 import java.util.*;
 import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
 /**

@@ -1,7 +1,8 @@
-package models;
+package businesslogic;
 
 import play.mvc.*;
 
+import models.*;
 import java.io.IOException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

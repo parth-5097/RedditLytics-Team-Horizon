@@ -1,4 +1,4 @@
-package models;
+package businesslogic;
 
 import java.io.IOException;
 import org.junit.Test;

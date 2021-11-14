@@ -1,16 +1,20 @@
 package controllers;
 
 import java.io.IOException;
+
 import org.junit.Test;
 import play.Application;
 import play.inject.guice.GuiceApplicationBuilder;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.test.WithApplication;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.junit.Assert.assertEquals;
 import static play.mvc.Http.Status.OK;
 import static play.test.Helpers.GET;
+import static play.test.Helpers.POST;
 import static play.test.Helpers.route;
 
 public class HomeControllerTest extends WithApplication {
@@ -31,7 +35,7 @@ public class HomeControllerTest extends WithApplication {
     }
 
     @Test
-    public void testRoutesAssets() throws IOException{
+    public void testRoutesAssets() throws IOException {
         Http.RequestBuilder request = new Http.RequestBuilder()
                 .method(GET)
                 .uri("/assets/images/Searchs_004.png");
@@ -41,7 +45,7 @@ public class HomeControllerTest extends WithApplication {
     }
 
     @Test
-    public void testWordStat(){
+    public void testWordStat() {
 
         Http.RequestBuilder request = new Http.RequestBuilder()
                 .method(GET)
@@ -62,7 +66,7 @@ public class HomeControllerTest extends WithApplication {
 
 
     @Test
-    public void WordstatTest(){
+    public void WordstatTest() {
 
         HomeController homeController = new HomeController();
         homeController.data = "apple";
@@ -71,7 +75,7 @@ public class HomeControllerTest extends WithApplication {
     }
 
     @Test
-    public void testSubReddit(){
+    public void testSubReddit() {
         Http.RequestBuilder request = new Http.RequestBuilder()
                 .method(GET)
                 .uri("/subreddit/gun");
@@ -81,7 +85,7 @@ public class HomeControllerTest extends WithApplication {
     }
 
     @Test
-    public void testSearchResultKey(){
+    public void testSearchResultKey() {
         Http.RequestBuilder request = new Http.RequestBuilder()
                 .method(GET)
                 .uri("/gun");
@@ -91,7 +95,7 @@ public class HomeControllerTest extends WithApplication {
     }
 
     @Test
-    public void testUserProfile(){
+    public void testUserProfile() {
         Http.RequestBuilder request = new Http.RequestBuilder()
                 .method(GET)
                 .uri("/userprofile/jreddit4321");
@@ -101,13 +105,17 @@ public class HomeControllerTest extends WithApplication {
     }
 
     @Test
-    public void testSentiment(){
-        Http.RequestBuilder request = new Http.RequestBuilder()
-                .method(GET)
-                .uri("/sentiment");
+    public void testSentiment() {
+        try {
+            JsonNode jsonNode = (new ObjectMapper()).readTree("{ \"text\": \"This is team horizon testing!!\" }");
+            Http.RequestBuilder request = new Http.RequestBuilder()
+                    .method(POST)
+                    .bodyJson(jsonNode).uri("/sentiment");
 
-        Result result = route(app, request);
-        assertEquals(OK, result.status());
+            Result result = route(app, request);
+            assertEquals(OK, result.status());
+        } catch (Exception e) {}
+
     }
 
 }

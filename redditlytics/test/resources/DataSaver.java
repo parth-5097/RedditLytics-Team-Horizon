@@ -1,4 +1,4 @@
-package models;
+package businesslogic;
 
 import javax.inject.Inject;
 import java.util.*;
