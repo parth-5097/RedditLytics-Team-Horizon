@@ -36,11 +36,12 @@ public class HomeController extends Controller {
     Word word = new Word();
     UserProfile profile = new UserProfile();
     public HomeController(){
-        sa.init();
+
     }
 
     @Inject
     public HomeController(AsyncCacheApi cache) {
+        sa.init();
         this.cache = cache;
     }
 

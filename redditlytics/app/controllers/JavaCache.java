@@ -11,7 +11,7 @@ import java.util.Optional;
 
 
 public abstract class JavaCache implements AsyncCacheApi {
-    private final HashMap<String, Object> cache = new HashMap();
+    private HashMap<String, Object> cache = new HashMap();
 
     @Override
     public <T> CompletionStage<Optional<T>> get(String key) {
