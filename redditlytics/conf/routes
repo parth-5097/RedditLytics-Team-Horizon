@@ -5,6 +5,7 @@
 # An example controller showing a sample home page
 
 GET       /                  controllers.HomeController.index()
+
 GET       /:key              controllers.HomeController.getSearchResult(key: String)
 
 GET       /search/:word      controllers.HomeController.getWordStats(word: String)
