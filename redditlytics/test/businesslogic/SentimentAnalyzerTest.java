@@ -1,4 +1,4 @@
-package models;
+package businesslogic;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 

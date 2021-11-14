@@ -1,7 +1,8 @@
-package models;
+package businesslogic;
 
 import play.mvc.*;
 
+import models.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
