@@ -1,7 +1,8 @@
-package models;
+package businesslogic;
 
 import play.mvc.*;
 
+import models.*;
 import java.io.IOException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -11,7 +12,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.*;
-
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -24,16 +24,34 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
+
+/**
+ * <p>The word class is defined to calculate the word statistics on the results of PushShift api.</p>
+ * <p>The class has a method which receive a whole json string which will process in function and lemmitization
+ * and tokenization is acheived using coreNLP stanford lib.</p>
+ *
+ * @author Jigar Borad
+ */
 public class Word {
 
     private String mainAPI = "https://api.pushshift.io/reddit/search/submission/?q=";
 
+
+    /**
+     * <p>The function is designed to manipulae a stirng and perform lemmitization and spliting on string.</p>
+     * <p>The string also going to be normalize in funtion.</p>
+     * <p>the function also calculate the frequency of words in string paramater.</p>
+     *
+     * @param searchWord The Json string which will be used in function by CORENlp lib to manipulate data.
+     * @return The list of <class>WordCount</class> objects are returned which contains the stirng word and its count value.
+     */
     public List<Wordcount> bodyData(String searchWord) {
         StanfordCoreNLP pipeline;
         String[] words;
         List<String> l = new ArrayList<>();
         Properties props = new Properties();
         props.put("annotators", "tokenize, ssplit, pos, lemma");
+
         pipeline = new StanfordCoreNLP(props, false);
         try {
             String[] sliceData = searchWord.split("%5097%");

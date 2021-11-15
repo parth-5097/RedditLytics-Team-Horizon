@@ -1,7 +1,7 @@
-package models;
+package businesslogic;
 
 import play.mvc.*;
-
+import models.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -14,6 +14,11 @@ import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+
+/**
+ * <p>The UserProfile class is designed to fetch user profile using PushShift Api.</p>
+ *
+ */
 public class UserProfile {
 
     String mainAPI = "https://api.pushshift.io/reddit/search/submission/?author=";
@@ -21,6 +26,13 @@ public class UserProfile {
     List<String> l = new ArrayList<>();
     JSONObject bodyData = null;
 
+
+    /**
+     * <p>PushShift api call is made in the function and trying to fetch results.</p>
+     *
+     * @param username the String parameter is used in api as parameter to search userprofile.
+     * @return JSONObject is retured which contains the author data in json format.
+     */
     public JSONObject getUserData(String username){
         JSONObject test = new JSONObject();
         try{
@@ -34,12 +46,20 @@ public class UserProfile {
         return test;
     }
 
+    /**
+     * <p>the functions call api and fetch lated submissions of author and process the json data and returns the list of each data.</p>
+     *
+     * @param username the String parameter is used to pass as parameter to another function.
+     * @return the list of <class>UserData</class> objects which contains the userdata.
+     */
     public List<UserData> getData(String username) {
         List<UserData> ar = new ArrayList<UserData>();
         JSONArray array = (JSONArray) this.getUserData(username).get("data");
         for (int i = 0; i < array.size(); i++) {
             var temp = (JSONObject) array.get(i);
-            ar.add(new UserData((String) temp.get("author_fullname"), (Long) temp.get("total_awards_received"), (String) temp.get("author"), (Long) temp.get("created_utc"), (String) temp.get("title"), (String) temp.get("subreddit"),(Long) temp.get("score"),(Double) temp.get("upvote_ratio")));
+            try{
+                ar.add(new UserData((String) temp.get("author_fullname"), (Long) temp.get("total_awards_received"), (String) temp.get("author"), (Long) temp.get("created_utc"), (String) temp.get("title"), (String) temp.get("subreddit"),(Long) temp.get("score"),(Double) temp.get("upvote_ratio")));
+            }catch (Exception e){}
         }
         return ar;
     }
