@@ -1,4 +1,4 @@
-package models;
+package businesslogic;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
@@ -14,9 +14,6 @@ public class SentimentAnalyzerTest {
         String neutral = "I’m not sure if I like the new design";
         String negative = "The new design is awful!";
 
-        System.out.println("positive : "+sc.findSentiment(positive));
-        System.out.println("neutral : "+sc.findSentiment(neutral));
-        System.out.println("negative : "+sc.findSentiment(negative));
         assertEquals(0,sc.findSentiment(null));
         assertEquals(0,sc.findSentiment(""));
     }

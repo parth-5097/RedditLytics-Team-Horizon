@@ -1,4 +1,4 @@
-package models;
+package businesslogic;
 
 import java.util.Properties;
 import org.ejml.simple.SimpleMatrix;
@@ -11,15 +11,32 @@ import edu.stanford.nlp.sentiment.SentimentCoreAnnotations.SentimentAnnotatedTre
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.util.CoreMap;
 
+
+/**
+ * <p>The class is defined to calculate the sentiment result of given string using coreNLP lib.</p>
+ *
+ * @author Group Development
+ */
 public class SentimentAnalyzer {
     static StanfordCoreNLP pipeline;
 
+    /**
+     * <p>initalization of sentiment default objects.</p>
+     */
     public static void init() {
         Properties props = new Properties();
         props.setProperty("annotators", "tokenize, ssplit, parse, sentiment");
         pipeline = new StanfordCoreNLP(props);
     }
 
+
+    /**
+     * <p>the functions perform analysis on string and calculate the score.</p>
+     * <p>The function uses stanford coreNLP lib to calculate sentiment on string.</p>
+     *
+     * @param tweet The string parameter on which the sentiment analysis will be performed.
+     * @return 0 - negative, 1- neutral, 2- positive
+     */
     public static int findSentiment(String tweet) {
 
         int mainSentiment = 0;

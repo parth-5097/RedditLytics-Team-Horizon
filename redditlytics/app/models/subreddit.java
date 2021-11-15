@@ -2,6 +2,13 @@ package models;
 
 import java.util.Date;
 
+
+/**
+ * <p>the subreddit model is devloped to store subreddit data.</p>
+ * <p> the model uses getters to achive encapsulations.</p>
+ *
+ * @author Parthiv Akbari
+ */
 public class subreddit{
     String author;
     long created_utc;
