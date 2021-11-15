@@ -27,7 +27,6 @@ public class WordTest{
         assertEquals("run",wordCount.get(0).getKey());
         assertEquals(5,wordCount.get(0).getValue());
         List<String> a = wordCount.stream().map(o -> o.getKey()).collect(Collectors.toList());
-        System.out.println(a);
     }
 
     @Test

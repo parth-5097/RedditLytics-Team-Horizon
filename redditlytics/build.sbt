@@ -10,7 +10,7 @@ scalaVersion := "2.13.6"
 libraryDependencies += guice
 
 libraryDependencies += "edu.stanford.nlp" % "stanford-corenlp" % "4.3.1"
-libraryDependencies += "org.mockito" % "mockito-core" % "2.22.0" % "test"
+libraryDependencies += "org.mockito" % "mockito-core" % "3.12.4"
 
 jacocoExcludes in Test := Seq(
   "controllers.Reverse*",
