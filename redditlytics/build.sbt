@@ -28,7 +28,7 @@ libraryDependencies ++= Seq(
 libraryDependencies ++= Seq(
   caffeine
 )
-lazy val akkaVersion = "2.6.15"
+lazy val akkaVersion = "2.10.0-M7"
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,

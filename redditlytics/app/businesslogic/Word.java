@@ -55,8 +55,12 @@ public class Word extends AbstractActor {
         return receiveBuilder()
                 .match(Key.class, hello -> {
                     List<Wordcount> temp = bodyData(hello.name);
+                    System.out.println(temp);
                     sender().tell("world", self());
                 })
+                .matchEquals("Hello",message ->{
+                    sender().tell("world",self());
+                        })
                 .build();
     }
 
