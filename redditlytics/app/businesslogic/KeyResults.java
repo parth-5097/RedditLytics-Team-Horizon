@@ -1,7 +1,6 @@
 package businesslogic;
 
 import play.mvc.*;
-
 import models.*;
 import java.io.IOException;
 import java.net.URI;
@@ -12,18 +11,13 @@ import java.net.http.HttpResponse;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import play.api.libs.json.*;
-
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import java.util.*;
-import java.util.concurrent.CompletionStage;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
-
+import akka.actor.*;
+import akka.japi.*;
 import com.fasterxml.jackson.databind.JsonNode;
 
 /**
@@ -35,13 +29,48 @@ import com.fasterxml.jackson.databind.JsonNode;
  *
  */
 
-public class KeyResults {
+public class KeyResults extends AbstractActor{
     String mainAPI = "https://api.pushshift.io/reddit/search/submission/?q=";
     String subRedditAPI = "https://api.pushshift.io/reddit/search/submission/?subreddit=";
     HttpResponse res = null;
     List<String> l = new ArrayList<>();
     JSONObject bodyData = null;
 
+
+    public static class Key{
+        public final String name;
+
+        public Key(String name){
+            this.name = name;
+        }
+    }
+
+
+    public static class SubredditKey{
+        public final String name;
+
+        public SubredditKey(String name){
+            this.name = name;
+        }
+    }
+
+    public static Props getProps() {
+        return Props.create(KeyResults.class);
+    }
+
+    @Override
+    public Receive createReceive() {
+        return receiveBuilder()
+                .match(Key.class, search -> {
+                    String data = getData(search.name);
+                    sender().tell(data, self());
+                })
+                .match(SubredditKey.class, subreddit -> {
+                    List<subreddit> data = getSubredditData(subreddit.name);
+                    sender().tell(data, self());
+                })
+                .build();
+    }
 
     /**
      * The functions trying to find out 250 latest submssions of the perticualr word using PushShift api.

@@ -10,7 +10,7 @@ scalaVersion := "2.13.6"
 libraryDependencies += guice
 
 libraryDependencies += "edu.stanford.nlp" % "stanford-corenlp" % "4.3.1"
-libraryDependencies += "org.mockito" % "mockito-core" % "2.22.0" % "test"
+libraryDependencies += "org.mockito" % "mockito-core" % "3.12.4" % "test"
 
 jacocoExcludes in Test := Seq(
   "controllers.Reverse*",
@@ -28,3 +28,11 @@ libraryDependencies ++= Seq(
 libraryDependencies ++= Seq(
   caffeine
 )
+lazy val akkaVersion = "2.6.15"
+
+libraryDependencies ++= Seq(
+  "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
+  "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion,
+  "ch.qos.logback" % "logback-classic" % "1.2.3",
+  "junit" % "junit" % "4.13.1" % Test,
+  "com.novocode" % "junit-interface" % "0.11" % Test)

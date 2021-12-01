@@ -9,7 +9,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.*;
-
+import akka.actor.*;
+import akka.japi.*;
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -19,12 +20,35 @@ import org.json.simple.parser.ParseException;
  * <p>The UserProfile class is designed to fetch user profile using PushShift Api.</p>
  *
  */
-public class UserProfile {
+public class UserProfile extends AbstractActor{
 
     String mainAPI = "https://api.pushshift.io/reddit/search/submission/?author=";
     HttpResponse res = null;
     List<String> l = new ArrayList<>();
     JSONObject bodyData = null;
+
+
+    public static class AuthorKey{
+        public final String name;
+
+        public AuthorKey(String name){
+            this.name = name;
+        }
+    }
+
+    public static Props getProps() {
+        return Props.create(UserProfile.class);
+    }
+
+    @Override
+    public Receive createReceive() {
+        return receiveBuilder()
+                .match(AuthorKey.class, hello -> {
+                    List<UserData> temp = getData(hello.name);
+                    sender().tell(temp, self());
+                })
+                .build();
+    }
 
 
     /**

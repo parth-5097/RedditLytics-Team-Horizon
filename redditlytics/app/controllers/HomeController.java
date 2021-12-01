@@ -1,4 +1,3 @@
-
 package controllers;
 import play.mvc.*;
 import models.*;
@@ -9,10 +8,15 @@ import java.util.concurrent.*;
 import play.libs.Json;
 import play.cache.*;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import akka.actor.*;
+import scala.compat.java8.FutureConverters;
+import static akka.pattern.Patterns.ask;
+
 /**
  * This controller contains an action to handle HTTP requests
  * to the application's home page.
@@ -27,23 +31,23 @@ import org.json.simple.parser.ParseException;
  *
  * @author Group development
  */
+
+@Singleton
 public class HomeController extends Controller {
+
+    final ActorRef helloActor,wordActor,userprofileactor;
     private AsyncCacheApi cache;
     private String CacheKey = "Index";
     String key;
     String data;
-    KeyResults results = new KeyResults();
     SentimentAnalyzer sa = new SentimentAnalyzer();
-    Word word = new Word();
-    UserProfile profile = new UserProfile();
-    public HomeController(){
 
-    }
 
     @Inject
-    public HomeController(AsyncCacheApi cache) {
-        sa.init();
-        this.cache = cache;
+    public HomeController(ActorSystem system) {
+        wordActor = system.actorOf(Word.getProps());
+        helloActor = system.actorOf(KeyResults.getProps());
+        userprofileactor = system.actorOf(UserProfile.getProps());
     }
 
     /**
@@ -61,12 +65,8 @@ public class HomeController extends Controller {
      */
     public CompletionStage<Result> getSearchResult(String key) {
         this.key = key;
-        return CompletableFuture
-                .supplyAsync(() -> results.getData(key))
-                .thenApply(i -> {
-                    CompletionStage<Done> result = cache.set(CacheKey, i);
-                    return ok(i);
-                });
+        return FutureConverters.toJava(ask(helloActor, new KeyResults.Key(key), Integer. MAX_VALUE))
+                .thenApply(response ->ok((String) response));
     }
 
 
@@ -80,16 +80,16 @@ public class HomeController extends Controller {
      * @param request post request contains json data which will be used in sentiment analysis.
      * @return sentiment result of data.
      */
-
-    public CompletionStage<Result> getSentimentResult(Http.Request request){
-        JsonNode json = request.body().asJson();
-        System.out.println(json.get("text"));
-        return CompletableFuture
-                .supplyAsync(() -> sa.findSentiment(String.valueOf(json.get("text"))))
-                .thenApply(i -> {
-                    return ok(String.valueOf(i));
-                });
-    }
+//
+//    public CompletionStage<Result> getSentimentResult(Http.Request request){
+//        JsonNode json = request.body().asJson();
+//        System.out.println(json.get("text"));
+//        return CompletableFuture
+//                .supplyAsync(() -> sa.findSentiment(String.valueOf(json.get("text"))))
+//                .thenApply(i -> {
+//                    return ok(String.valueOf(i));
+//                });
+//    }
 
 
     /**
@@ -104,7 +104,6 @@ public class HomeController extends Controller {
     public CompletionStage<Result> index() {
         return CompletableFuture
                 .supplyAsync(() -> {
-                    CompletionStage<Optional<Object>> data = cache.get(CacheKey);
                     return data;
                 })
                 .thenApply(i -> {
@@ -120,19 +119,25 @@ public class HomeController extends Controller {
      * @param word the word string is used to find call api and perform word statistics on the result data.
      * @return the function returns html file contaiing the results of word statistics.
      */
-
     public CompletionStage<Result> getWordStats(String a) {
+
         if (data != null && this.key == a) {
-            return CompletableFuture
-                    .supplyAsync(() -> word.bodyData(data))
-                    .thenApply(i -> ok(views.html.word_stats.render(i)));
+            return FutureConverters.toJava(ask(wordActor, new Word.Key(data), Integer. MAX_VALUE))
+                    .thenApply(response ->ok(views.html.word_stats.render((List<Wordcount>) response)));
         } else {
             this.key = a;
-            data = results.getData(a);
-            return CompletableFuture
-                    .supplyAsync(() -> word.bodyData(data))
-                    .thenApply(i -> ok(views.html.word_stats.render(i)));
+            return FutureConverters.toJava(ask(helloActor, new KeyResults.Key(a), Integer. MAX_VALUE))
+                    .thenApply(response -> FutureConverters.toJava(ask(wordActor, new Word.Key((String)response), Integer. MAX_VALUE)))
+                    .thenApply(response -> {
+                        List<Wordcount> result = null;
+                        try{
+                            result = (List<Wordcount>) response.toCompletableFuture().get();
+                        }catch(Exception e) {
+                        }
+                        return ok(views.html.word_stats.render(result));
+                    });
         }
+
     }
 
     /**
@@ -142,18 +147,21 @@ public class HomeController extends Controller {
      * @param username parameter username is used to call api and find user profile and their submissions.
      * @return function returns the html file with userprofile data and their submissions.
      */
-
     public CompletionStage<Result> getUserProfile(String username) {
-        return CompletableFuture
-                .supplyAsync(() -> profile.getData(username))
-                .thenApply(i -> {
-                    List<UserData> userdata = i;
-                    String author = userdata.get(0).getAuthor();
-                    long totalAwardsReceived = userdata.get(0).getTotal_awards_received();
-                    return ok(views.html.user_profile.render(userdata, author, totalAwardsReceived));
+        return FutureConverters.toJava(ask(userprofileactor, new UserProfile.AuthorKey(username), Integer. MAX_VALUE))
+                .thenApply(response -> {
+                    List<UserData> result = null;
+                    String author=null;
+                    long totalAwardsReceived=0L;
+                    try{
+                        result = (List<UserData>) response;
+                        author = result.get(0).getAuthor();
+                        totalAwardsReceived = result.get(0).getTotal_awards_received();
+                    }catch(Exception e) {
+                    }
+                    return ok(views.html.user_profile.render(result, author, totalAwardsReceived));
                 });
     }
-
 
     /**
      * <p> The function is developed to find subreddit submissions.</p>
@@ -162,9 +170,11 @@ public class HomeController extends Controller {
      * @return the html file which contains the subreddit submissions and profile.
      */
     public CompletionStage<Result> getSubreddit(String word) {
-        return CompletableFuture
-                .supplyAsync(() -> results.getSubredditData(word))
-                .thenApply(i -> ok(views.html.subreddit.render(i)));
+
+        return FutureConverters.toJava(ask(helloActor, new KeyResults.SubredditKey(word), Integer. MAX_VALUE))
+                .thenApply(response -> ok(views.html.subreddit.render((List<subreddit>)response)));
+
     }
+
 }
 

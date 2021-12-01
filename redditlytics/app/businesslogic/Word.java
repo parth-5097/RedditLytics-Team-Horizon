@@ -23,7 +23,9 @@ import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
-
+import java.util.concurrent.*;
+import akka.actor.*;
+import akka.japi.*;
 
 /**
  * <p>The word class is defined to calculate the word statistics on the results of PushShift api.</p>
@@ -32,10 +34,31 @@ import edu.stanford.nlp.util.CoreMap;
  *
  * @author Jigar Borad
  */
-public class Word {
+public class Word extends AbstractActor {
 
     private String mainAPI = "https://api.pushshift.io/reddit/search/submission/?q=";
 
+    public static class Key{
+        public final String name;
+
+        public Key(String name){
+            this.name = name;
+        }
+    }
+
+    public static Props getProps() {
+        return Props.create(Word.class);
+    }
+
+    @Override
+    public Receive createReceive() {
+        return receiveBuilder()
+                .match(Key.class, hello -> {
+                    List<Wordcount> temp = bodyData(hello.name);
+                    sender().tell("world", self());
+                })
+                .build();
+    }
 
     /**
      * <p>The function is designed to manipulae a stirng and perform lemmitization and spliting on string.</p>
@@ -75,14 +98,34 @@ public class Word {
         List<String> distinct_word_list = l.stream()
                 .distinct()
                 .collect(Collectors.toList());
-        ArrayList<Wordcount> uniquewords = new ArrayList<Wordcount>();
-        for (String search : distinct_word_list) {
-            uniquewords.add(new Wordcount(search, Collections.frequency(l, search)));
+        long start = System.nanoTime();
+//        ArrayList<Wordcount> uniquewords = new ArrayList<Wordcount>();
+//        for (String search : distinct_word_list) {
+//            uniquewords.add(new Wordcount(search, Collections.frequency(l, search)));
+//        }
+//        long end = System.nanoTime();
+//
+        List<CompletableFuture<Wordcount>> uniquewords=null;
+        try {
+                    uniquewords =
+                    distinct_word_list.stream()
+                            .map( o -> CompletableFuture.supplyAsync(
+                                    () -> new Wordcount(o, Collections.frequency(l, o))
+                            ))
+                            .collect(Collectors.toList());
+
+        } catch (java.lang.Exception e) {
+            e.printStackTrace();
         }
 
-        List<Wordcount> sortedWord = uniquewords.stream()
+        List<Wordcount> a = uniquewords.stream().
+                map(CompletableFuture::join).collect(Collectors.toList());
+
+        long end = System.nanoTime();
+        System.out.println("Time : "+ (end-start));
+        List<Wordcount> sortedWord = a.stream()
                 .sorted(Comparator.comparingInt(Wordcount::getValue).reversed())
                 .collect(Collectors.toList());
-        return sortedWord;
+        return sortedWord ;
     }
 }
