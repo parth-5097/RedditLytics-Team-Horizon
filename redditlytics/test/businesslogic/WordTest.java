@@ -24,13 +24,10 @@ import org.junit.ClassRule;
 import akka.actor.typed.javadsl.Behaviors;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.spy;
-import akka.actor.testkit.typed.javadsl.TestKitJunitResource;
+
 import java.time.Duration;
 
 public class WordTest{
-
-    @ClassRule
-    public static final TestKitJunitResource testKit = new TestKitJunitResource();
 
     static ActorSystem actorSystem;
 

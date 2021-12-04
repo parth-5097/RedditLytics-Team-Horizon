@@ -88,6 +88,7 @@ public class KeyResults extends AbstractActor{
             Object obj = new JSONParser().parse(String.valueOf(res.body()));
             JSONObject test = (JSONObject) obj;
             JSONArray array = (JSONArray) test.get("data");
+            System.out.println(array.size());
             for (int i = 0; i < array.size(); i++) {
                 bodyData = (JSONObject) array.get(i);
                 if (a == null) {
