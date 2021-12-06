@@ -39,7 +39,7 @@ import static akka.pattern.Patterns.ask;
 @Singleton
 public class HomeController extends Controller {
 
-    final ActorRef helloActor,wordActor,userprofileactor;
+    final ActorRef helloActor,wordActor,userprofileactor,subredditActor;
 
     private String CacheKey = "Index";
     private AsyncCacheApi cache;
@@ -58,13 +58,13 @@ public class HomeController extends Controller {
         wordActor = actorSystem.actorOf(Word.getProps());
         helloActor = actorSystem.actorOf(KeyResults.getProps());
         userprofileactor = actorSystem.actorOf(UserProfile.getProps());
+        subredditActor = actorSystem.actorOf(Subreddit.getProps());
     }
 
     public Result index(Http.Request request) {
         String url = routes.HomeController.socket().webSocketURL(request);
-        //To test WebSockets with akka streams, uncomment the next line and comment out the previous
-//        String url = routes.HomeController.akkaStreamsSocket().webSocketURL(request);
-        return ok(index.render(url));
+        System.out.println("Index ma gayu");
+        return ok(index.render(url)).withNewSession();
     }
 
     public WebSocket socket() {
@@ -95,7 +95,7 @@ public class HomeController extends Controller {
 
     public CompletionStage<Result> getWordStats(String a) {
 
-            return FutureConverters.toJava(ask(helloActor, new KeyResults.Key(a), Integer. MAX_VALUE))
+            return FutureConverters.toJava(ask(helloActor, a, Integer. MAX_VALUE))
                     .thenApply(response -> FutureConverters.toJava(ask(wordActor, new Word.Key((String)response), Integer. MAX_VALUE)))
                     .thenApply(response -> {
                         List<Wordcount> result = null;
@@ -109,7 +109,7 @@ public class HomeController extends Controller {
 
 
     public CompletionStage<Result> getUserProfile(String username) {
-        return FutureConverters.toJava(ask(userprofileactor, new UserProfile.AuthorKey(username), Integer. MAX_VALUE))
+        return FutureConverters.toJava(ask(userprofileactor, username, Integer. MAX_VALUE))
                 .thenApply(response -> {
                     List<UserData> result = null;
                     String author=null;
@@ -128,7 +128,7 @@ public class HomeController extends Controller {
 
     public CompletionStage<Result> getSubreddit(String word) {
 
-        return FutureConverters.toJava(ask(helloActor, new KeyResults.SubredditKey(word), Integer. MAX_VALUE))
+        return FutureConverters.toJava(ask(subredditActor, word, Integer. MAX_VALUE))
                 .thenApply(response -> ok(views.html.subreddit.render((List<subreddit>)response)));
 
     }

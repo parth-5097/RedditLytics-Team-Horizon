@@ -21,7 +21,9 @@ public class WebsocketActor extends AbstractActor {
         return Props.create(WebsocketActor.class, out);
     }
 
-    private final ActorRef out;
+    public WebsocketActor(){}
+
+    private ActorRef out;
 
     public WebsocketActor(ActorRef out) {
         this.out = out;
@@ -67,8 +69,6 @@ public class WebsocketActor extends AbstractActor {
             result.add(obj);
             if (jsonArrayStr.size() > 0) {
                 getValuesForGivenKey(jsonArrayStr, test, result);
-            } else {
-                return result;
             }
         } else {
             jsonArrayStr.remove(0);

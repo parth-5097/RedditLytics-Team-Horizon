@@ -22,19 +22,19 @@ import org.json.simple.parser.ParseException;
  */
 public class UserProfile extends AbstractActor{
 
-    String mainAPI = "https://api.pushshift.io/reddit/search/submission/?author=";
+    public String mainAPI = "https://api.pushshift.io/reddit/search/submission/?author=";
     HttpResponse res = null;
     List<String> l = new ArrayList<>();
     JSONObject bodyData = null;
 
 
-    public static class AuthorKey{
-        public final String name;
-
-        public AuthorKey(String name){
-            this.name = name;
-        }
-    }
+//    public static class AuthorKey{
+//        public final String name;
+//
+//        public AuthorKey(String name){
+//            this.name = name;
+//        }
+//    }
 
     public static Props getProps() {
         return Props.create(UserProfile.class);
@@ -43,8 +43,10 @@ public class UserProfile extends AbstractActor{
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(AuthorKey.class, hello -> {
-                    List<UserData> temp = getData(hello.name);
+                .match(String.class, hello -> {
+                    System.out.println(hello);
+                    List<UserData> temp = getData(hello);
+                    System.out.println(temp);
                     sender().tell(temp, self());
                 })
                 .build();

@@ -1,4 +1,4 @@
-import businesslogic.KeyResults;
+import businesslogic.Subreddit;
 import models.subreddit;
 import java.io.IOException;
 import org.junit.Test;
@@ -40,29 +40,47 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 
-public class KeyResultsTest extends Mockito{
+public class SubredditTest extends Mockito{
 
     static ActorSystem actorSystem;
-    static String temp = "Anything";
+    static List<subreddit> l;
 
-    public static class KeyResultsTestMock extends AbstractActor {
-        String mainAPI = "http://localhost:0000";
+    public static class SubredditTestMock extends AbstractActor {
+        String subRedditAPI = "http://localhost:0000";
         HttpResponse res = null;
         JSONObject bodyData = null;
 
         @Override
         public Receive createReceive() {
             return receiveBuilder()
-                    .match(String.class, search -> {
-                        String data = getData(search);
+                    .match(String.class, subreddit -> {
+                        List<subreddit> data = l;
                         sender().tell(data, self());
                     })
                     .build();
         }
 
-        public String getData(String V) {
-            String a = V;
-            return a;
+        public JSONObject subredditAPI(String V){
+            JSONObject test = new JSONObject();
+            try{
+                HttpClient client = HttpClient.newHttpClient();
+                HttpRequest req = HttpRequest.newBuilder().uri(URI.create(subRedditAPI + URLEncoder.encode(V, "UTF-8") + "&size=10&fields=title,created_utc,author,subreddit&sort=DESC")).build();
+                res = client.send(req, HttpResponse.BodyHandlers.ofString());
+                Object obj = new JSONParser().parse(String.valueOf(res.body()));
+                test = (JSONObject) obj;
+            }catch (Exception e) {
+            }
+            return test;
+        }
+
+        public List<subreddit> getSubredditData(String key) {
+            List<subreddit> ar = new ArrayList<subreddit>();
+            JSONArray array = (JSONArray) this.subredditAPI(key).get("data");
+            for (int i = 0; i < array.size(); i++) {
+                var temp = (JSONObject) array.get(i);
+                ar.add(new subreddit((String) temp.get("author"), (Long) temp.get("created_utc"), (String) temp.get("title"), (String) temp.get("subreddit")));
+            }
+            return ar;
         }
 
     }
@@ -71,25 +89,27 @@ public class KeyResultsTest extends Mockito{
     public static final TestKitJunitResource testKit = new TestKitJunitResource();
 
     @Mock
-    private KeyResults keyResults;
+    private Subreddit subreddit;
     private ActorRef mainActor;
 
     @Before
     public void setup() {
         actorSystem = ActorSystem.create();
-        keyResults = mock(KeyResults.class);
-        when(keyResults.getData("Anything")).thenReturn(temp);
+        subreddit = mock(Subreddit.class);
+        l = new ArrayList<subreddit>();
+        l.add(new subreddit("1",2L,"Shubham","Bhanderi"));
+        when(subreddit.getSubredditData("qassym")).thenReturn(l);
     }
 
     @Test
     public void testGetData() {
-        final Props props = Props.create(KeyResultsTestMock.class);
+        final Props props = Props.create(SubredditTestMock.class);
         mainActor = actorSystem.actorOf(props);
         final TestKit testProbe = new TestKit(actorSystem);
 
-        mainActor.tell("Anything",testProbe.getRef());
-        String a = testProbe.expectMsgClass(String.class);
-        assertEquals(temp,a);
+        mainActor.tell("qassym",testProbe.getRef());
+        List a = testProbe.expectMsgClass(List.class);
+        assertEquals(l,a);
     }
 
     @After

@@ -31,28 +31,27 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class KeyResults extends AbstractActor{
     String mainAPI = "https://api.pushshift.io/reddit/search/submission/?q=";
-    String subRedditAPI = "https://api.pushshift.io/reddit/search/submission/?subreddit=";
+    //    String subRedditAPI = "https://api.pushshift.io/reddit/search/submission/?subreddit=";
     HttpResponse res = null;
-    List<String> l = new ArrayList<>();
     JSONObject bodyData = null;
 
 
-    public static class Key{
-        public final String name;
+//    public static class Key{
+//        public final String name;
+//
+//        public Key(String name){
+//            this.name = name;
+//        }
+//    }
 
-        public Key(String name){
-            this.name = name;
-        }
-    }
 
-
-    public static class SubredditKey{
-        public final String name;
-
-        public SubredditKey(String name){
-            this.name = name;
-        }
-    }
+//    public static class SubredditKey{
+//        public final String name;
+//
+//        public SubredditKey(String name){
+//            this.name = name;
+//        }
+//    }
 
     public static Props getProps() {
         return Props.create(KeyResults.class);
@@ -61,12 +60,8 @@ public class KeyResults extends AbstractActor{
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(Key.class, search -> {
-                    String data = getData(search.name);
-                    sender().tell(data, self());
-                })
-                .match(SubredditKey.class, subreddit -> {
-                    List<subreddit> data = getSubredditData(subreddit.name);
+                .match(String.class, search -> {
+                    String data = getData(search);
                     sender().tell(data, self());
                 })
                 .build();
@@ -88,7 +83,6 @@ public class KeyResults extends AbstractActor{
             Object obj = new JSONParser().parse(String.valueOf(res.body()));
             JSONObject test = (JSONObject) obj;
             JSONArray array = (JSONArray) test.get("data");
-            System.out.println(array.size());
             for (int i = 0; i < array.size(); i++) {
                 bodyData = (JSONObject) array.get(i);
                 if (a == null) {
@@ -103,41 +97,41 @@ public class KeyResults extends AbstractActor{
     }
 
 
-    /**
-     * <p> The function is used to search subreddit's latest 10 submission using subreddit string passed in function paramter.</p>
-     *
-     * @author Parthiv Akbari
-     * @param V The string paramter is the name subreddit user of Reddit.
-     * @return the JSONObject is returned which contains the submissions of subreddit.
-     */
-    public JSONObject subredditAPI(String V){
-        JSONObject test = new JSONObject();
-        try{
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest req = HttpRequest.newBuilder().uri(URI.create(subRedditAPI + URLEncoder.encode(V, "UTF-8") + "&size=10&fields=title,created_utc,author,subreddit&sort=DESC")).build();
-            res = client.send(req, HttpResponse.BodyHandlers.ofString());
-            Object obj = new JSONParser().parse(String.valueOf(res.body()));
-            test = (JSONObject) obj;
-        }catch (Exception e) {
-        }
-        return test;
-    }
+//    /**
+//     * <p> The function is used to search subreddit's latest 10 submission using subreddit string passed in function paramter.</p>
+//     *
+//     * @author Parthiv Akbari
+//     * @param V The string paramter is the name subreddit user of Reddit.
+//     * @return the JSONObject is returned which contains the submissions of subreddit.
+//     */
+//    public JSONObject subredditAPI(String V){
+//        JSONObject test = new JSONObject();
+//        try{
+//            HttpClient client = HttpClient.newHttpClient();
+//            HttpRequest req = HttpRequest.newBuilder().uri(URI.create(subRedditAPI + URLEncoder.encode(V, "UTF-8") + "&size=10&fields=title,created_utc,author,subreddit&sort=DESC")).build();
+//            res = client.send(req, HttpResponse.BodyHandlers.ofString());
+//            Object obj = new JSONParser().parse(String.valueOf(res.body()));
+//            test = (JSONObject) obj;
+//        }catch (Exception e) {
+//        }
+//        return test;
+//    }
 
 
-    /**
-     * The function is designed to get subreddit latest submission and to process JSON data.
-     *
-     * @author Parthiv Akabari
-     * @param key the Key value is the name of subreddit used to pass as function paramter.
-     * @return The list of <class>Subreddit</class> objets.
-     */
-    public List<subreddit> getSubredditData(String key) {
-        List<subreddit> ar = new ArrayList<subreddit>();
-        JSONArray array = (JSONArray) this.subredditAPI(key).get("data");
-        for (int i = 0; i < array.size(); i++) {
-            var temp = (JSONObject) array.get(i);
-            ar.add(new subreddit((String) temp.get("author"), (Long) temp.get("created_utc"), (String) temp.get("title"), (String) temp.get("subreddit")));
-        }
-        return ar;
-    }
+//    /**
+//     * The function is designed to get subreddit latest submission and to process JSON data.
+//     *
+//     * @author Parthiv Akabari
+//     * @param key the Key value is the name of subreddit used to pass as function paramter.
+//     * @return The list of <class>Subreddit</class> objets.
+//     */
+//    public List<subreddit> getSubredditData(String key) {
+//        List<subreddit> ar = new ArrayList<subreddit>();
+//        JSONArray array = (JSONArray) this.subredditAPI(key).get("data");
+//        for (int i = 0; i < array.size(); i++) {
+//            var temp = (JSONObject) array.get(i);
+//            ar.add(new subreddit((String) temp.get("author"), (Long) temp.get("created_utc"), (String) temp.get("title"), (String) temp.get("subreddit")));
+//        }
+//        return ar;
+//    }
 }
