@@ -1,0 +1,32 @@
+@(userdata: List[UserData],author: String,totalAwardsReceived: Long)
+@main("User Profile") {
+
+<div style="margin-top: 40px;width: 100%">
+    <h1>Author: @author</h1>
+    <h2>Total awards received: @totalAwardsReceived</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Published on</th>
+            <th>Author</th>
+            <th>SUBREDDIT</th>
+            <th>Content</th>
+            <th>Score</th>
+            <th>Upvote Ratio</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for(w <- userdata){
+        <tr>
+            <td>@w.getCreated_utc() </td>
+            <td>@w.getAuthor()</td>
+            <td>@w.getSubreddit()</td>
+            <td>@w.getTitle()</td>
+            <td>@w.getScore()</td>
+            <td>@w.getUpvoteRatio()</td>
+        </tr>
+        }
+        </tbody>
+    </table>
+</div>
+}

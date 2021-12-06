@@ -1,16 +1,14 @@
 package actors;
-
 import akka.actor.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
 import java.net.URI;
 import java.net.URLEncoder;
+
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-
 public class WebsocketActor extends AbstractActor {
     String mainAPI = "https://api.pushshift.io/reddit/search/submission/?q=";
     HttpResponse res = null;
@@ -21,7 +19,10 @@ public class WebsocketActor extends AbstractActor {
         return Props.create(WebsocketActor.class, out);
     }
 
-    private final ActorRef out;
+    public WebsocketActor(){
+    }
+
+    private ActorRef out;
 
     public WebsocketActor(ActorRef out) {
         this.out = out;
@@ -44,9 +45,11 @@ public class WebsocketActor extends AbstractActor {
                 result = getValuesForGivenKey(result, test, new JSONArray());
             }
         } catch (Exception e) {
+            System.out.println(e);
         }
         return result;
     }
+
 
     public JSONArray getValuesForGivenKey(JSONArray jsonArrayStr, JSONObject test, JSONArray result) {
         JSONObject obj = (JSONObject) jsonArrayStr.get(0);
@@ -64,8 +67,6 @@ public class WebsocketActor extends AbstractActor {
             result.add(obj);
             if (jsonArrayStr.size() > 0) {
                 getValuesForGivenKey(jsonArrayStr, test, result);
-            } else {
-                return result;
             }
         } else {
             jsonArrayStr.remove(0);
@@ -86,4 +87,5 @@ public class WebsocketActor extends AbstractActor {
                 })
                 .build();
     }
+
 }
