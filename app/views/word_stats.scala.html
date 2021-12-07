@@ -1,0 +1,25 @@
+@(words: List[models.Wordcount])
+@main("Word-Stat") {
+
+        <div style="text-align: center;color: black">
+            <h1>WORD STATISTICS</h1>
+        </div>
+
+<table style="width:30%">
+    <thead>
+        <tr class="table100-head">
+            <th class="column1">Word</th>
+            <th class="column2">Count</th>
+        </tr>
+    </thead>
+    <tbody>
+    @for(person <- words){
+        <tr>
+            <td class="column1">@person.getKey()</td>
+            <td class="column2">@person.getValue()</td>
+        </tr>
+    }
+    </tbody>
+
+</table>
+}

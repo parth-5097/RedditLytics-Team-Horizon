@@ -1,0 +1,56 @@
+@(url: String)
+@main("Welcome Play") {
+<div class="s004">
+    <div>
+        <button id="btn"
+                type="button">Word Statistics
+        </button>
+    </div>
+    <div id="search-bar">
+        <input class="key" id="messageInput" name="key" placeholder="Type to search" type="text">
+        <button id="sendButton" style="border-radius: 8px" type="button">Search</button>
+    </div>
+    <div id="table-1" style="margin-top: 40px;
+                width: 100%">
+        <table>
+            <thead>
+            <tr>
+                <th>Published on</th>
+                <th>Author</th>
+                <th>SUBREDDIT</th>
+                <th>Content</th>
+            </tr>
+            </thead>
+            <tbody id="records_table"></tbody>
+        </table>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+            function init() {
+            initWebSocket();
+        }
+
+        function initWebSocket() {
+            webSocket = new WebSocket("@url");
+            webSocket.onopen = onOpen;
+            webSocket.onclose = onClose;
+            webSocket.onmessage = onMessage;
+            webSocket.onerror = onError;
+        }
+
+        function onOpen(evt) {
+            console.log("CONNECTED");
+        }
+
+        function onClose(evt) {
+            console.log("DISCONNECTED");
+            appendMessageToView(":", "DISCONNECTED");
+        }
+
+        function onError(evt) {
+            console.log("ERROR: " + evt.data);
+            console.log("ERROR: " + JSON.stringify(evt));
+        }
+        </script>
+}
