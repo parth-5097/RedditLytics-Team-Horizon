@@ -52,6 +52,7 @@ public class SentimentAnalyzer extends AbstractActor{
      *
      * @param tweet The string parameter on which the sentiment analysis will be performed.
      * @return 0 - negative, 1- neutral, 2- positive
+     * @author Parthiv Akbari
      */
     public static int findSentiment(String tweet) {
         init();

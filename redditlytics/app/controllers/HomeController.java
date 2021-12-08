@@ -68,7 +68,7 @@ public class HomeController extends Controller {
      *
      * <p>The function also maintains the cache during session. when session ends, cache will be deleted.</p>
      *
-     * @author Group developemt
+     * @author Group development
      * @return render index or Home page html file
      */
     public CompletionStage<Result> index(Http.Request request) {
@@ -98,7 +98,7 @@ public class HomeController extends Controller {
      *
      * <p>This implementation can be regarded as reactive server-push paradigm.</p>
      *
-     * @author Group developemt
+     * @author Group development
      * @return And returns text in response
      */
     public WebSocket akkaStreamsSocket() {
@@ -189,7 +189,7 @@ public class HomeController extends Controller {
      * The function is used for caching the searched data. we are using play built in asynccache to cache the data using session key.
      * @param request http request to get data from.
      * @return done acknoledgement
-     * @author Parthiv Akbari
+     * @author Group Development
      */
     public CompletionStage<Result> setCacheData(Http.Request request){
         JsonNode json = request.body().asJson();
@@ -201,7 +201,7 @@ public class HomeController extends Controller {
     /**
      * the function us used to get cached id key to fetch the data
      * @return the cache id
-     * @author Parthiv Akbari
+     * @author Group Development
      */
     public CompletionStage<Result> getCacheId(){
         return cache.get("key").thenApply(i -> ok(i.get().toString()));
@@ -211,7 +211,7 @@ public class HomeController extends Controller {
      * the function is used to fetch data from cache using key.
      * @param data is the key we used to fetch data from Asyncache
      * @return the data from cache memory
-     * @author Parthiv Akbari
+     * @author Group Development
      */
     public CompletionStage<Result> getCacheData(String data){
         return cache.get(data).thenApply(i -> ok(i.get().toString()));

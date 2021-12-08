@@ -16,6 +16,7 @@ import akka.actor.*;
  * <p>The class has 3 methods. A) getData(string) b)subredditAPI(string) c)getSubredditData(string) </p>
  * <p>The methods are used to call api to search data of specific word or to search latest submission of subreddit</p>
  *
+ * @author Jigar Development
  */
 
 public class KeyResults extends AbstractActor{
@@ -40,7 +41,7 @@ public class KeyResults extends AbstractActor{
     /**
      * The functions trying to find out 250 latest submssions of the perticualr word using PushShift api.
      *
-     * @author Group development
+     * @author Jigar Development
      * @param V The string parameter is used in PushShift api to search the results of that parameter.
      * @return The funcion returns the JSON String data.
      */
