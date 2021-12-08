@@ -2,7 +2,6 @@ package models;
 
 import java.util.Date;
 
-
 /**
  * <p>the subreddit model is devloped to store subreddit data.</p>
  * <p> the model uses getters to achive encapsulations.</p>

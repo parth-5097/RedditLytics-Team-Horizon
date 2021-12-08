@@ -1,24 +1,15 @@
 package businesslogic;
 
-import play.mvc.*;
 import models.*;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import play.api.libs.json.*;
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import javax.inject.Inject;
 import akka.actor.*;
-import akka.japi.*;
-import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  *
@@ -27,6 +18,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  * <p>The class has 3 methods. A) getData(string) b)subredditAPI(string) c)getSubredditData(string) </p>
  * <p>The methods are used to call api to search data of specific word or to search latest submission of subreddit</p>
  *
+ * @author Parthiv Akabari
  */
 
 public class Subreddit extends AbstractActor{

@@ -1,8 +1,6 @@
 package businesslogic;
 
-import play.mvc.*;
 import models.*;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -10,15 +8,14 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.*;
 import akka.actor.*;
-import akka.japi.*;
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 
 /**
  * <p>The UserProfile class is designed to fetch user profile using PushShift Api.</p>
  *
+ * @author Shubham Bhanderi
  */
 public class UserProfile extends AbstractActor{
 
@@ -26,15 +23,6 @@ public class UserProfile extends AbstractActor{
     HttpResponse res = null;
     List<String> l = new ArrayList<>();
     JSONObject bodyData = null;
-
-
-//    public static class AuthorKey{
-//        public final String name;
-//
-//        public AuthorKey(String name){
-//            this.name = name;
-//        }
-//    }
 
     public static Props getProps() {
         return Props.create(UserProfile.class);
@@ -44,9 +32,7 @@ public class UserProfile extends AbstractActor{
     public Receive createReceive() {
         return receiveBuilder()
                 .match(String.class, hello -> {
-                    System.out.println(hello);
                     List<UserData> temp = getData(hello);
-                    System.out.println(temp);
                     sender().tell(temp, self());
                 })
                 .build();
@@ -56,8 +42,10 @@ public class UserProfile extends AbstractActor{
     /**
      * <p>PushShift api call is made in the function and trying to fetch results.</p>
      *
+     * @author Shubham Bhanderi
      * @param username the String parameter is used in api as parameter to search userprofile.
      * @return JSONObject is retured which contains the author data in json format.
+     *
      */
     public JSONObject getUserData(String username){
         JSONObject test = new JSONObject();
@@ -75,6 +63,7 @@ public class UserProfile extends AbstractActor{
     /**
      * <p>the functions call api and fetch lated submissions of author and process the json data and returns the list of each data.</p>
      *
+     * @author Shubham Bhanderi
      * @param username the String parameter is used to pass as parameter to another function.
      * @return the list of <class>UserData</class> objects which contains the userdata.
      */

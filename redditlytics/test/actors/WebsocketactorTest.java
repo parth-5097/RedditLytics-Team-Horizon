@@ -1,5 +1,5 @@
-package controllers;
-import actors.WebsocketActor;
+package actors;
+
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.http.javadsl.testkit.JUnitRouteTest;
@@ -12,7 +12,6 @@ public class WebsocketactorTest extends JUnitRouteTest {
 
     private final ActorSystem system = ActorSystem.create();
 
-
     @Test
     public void testActorForsocket() {
         final Props props = Props.create(WebsocketActor.class);
@@ -24,7 +23,5 @@ public class WebsocketactorTest extends JUnitRouteTest {
         assertTrue(actor.getData("Apple").size()>0);
         assertTrue(actor.getData("car").size()>0);
         assertTrue(actor.getData("Science").size()>0);
-
     }
-
 }

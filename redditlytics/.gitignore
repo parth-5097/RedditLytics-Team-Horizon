@@ -1,0 +1,12 @@
+lib
+logs
+null
+target
+/.bsp
+/.idea
+/.idea_modules
+/.classpath
+/.project
+/.settings
+/RUNNING_PID
+/.metadata/

@@ -1,16 +1,7 @@
 package businesslogic;
 
-import play.mvc.*;
-
 import models.*;
-import java.io.IOException;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.*;
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
@@ -25,7 +16,6 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 import java.util.concurrent.*;
 import akka.actor.*;
-import akka.japi.*;
 
 /**
  * <p>The word class is defined to calculate the word statistics on the results of PushShift api.</p>
@@ -68,6 +58,7 @@ public class Word extends AbstractActor {
      * <p>The string also going to be normalize in funtion.</p>
      * <p>the function also calculate the frequency of words in string paramater.</p>
      *
+     * @author Jigar Borad
      * @param searchWord The Json string which will be used in function by CORENlp lib to manipulate data.
      * @return The list of <class>WordCount</class> objects are returned which contains the stirng word and its count value.
      */
@@ -102,12 +93,7 @@ public class Word extends AbstractActor {
                 .distinct()
                 .collect(Collectors.toList());
         long start = System.nanoTime();
-//        ArrayList<Wordcount> uniquewords = new ArrayList<Wordcount>();
-//        for (String search : distinct_word_list) {
-//            uniquewords.add(new Wordcount(search, Collections.frequency(l, search)));
-//        }
-//        long end = System.nanoTime();
-//
+
         List<CompletableFuture<Wordcount>> uniquewords=null;
         try {
                     uniquewords =
@@ -118,7 +104,6 @@ public class Word extends AbstractActor {
                             .collect(Collectors.toList());
 
         } catch (java.lang.Exception e) {
-            e.printStackTrace();
         }
 
         List<Wordcount> a = uniquewords.stream().
