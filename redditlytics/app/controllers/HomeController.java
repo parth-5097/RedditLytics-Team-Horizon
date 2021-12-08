@@ -189,6 +189,7 @@ public class HomeController extends Controller {
      * The function is used for caching the searched data. we are using play built in asynccache to cache the data using session key.
      * @param request http request to get data from.
      * @return done acknoledgement
+     * @author Parthiv Akbari
      */
     public CompletionStage<Result> setCacheData(Http.Request request){
         JsonNode json = request.body().asJson();
@@ -200,6 +201,7 @@ public class HomeController extends Controller {
     /**
      * the function us used to get cached id key to fetch the data
      * @return the cache id
+     * @author Parthiv Akbari
      */
     public CompletionStage<Result> getCacheId(){
         return cache.get("key").thenApply(i -> ok(i.get().toString()));
@@ -209,6 +211,7 @@ public class HomeController extends Controller {
      * the function is used to fetch data from cache using key.
      * @param data is the key we used to fetch data from Asyncache
      * @return the data from cache memory
+     * @author Parthiv Akbari
      */
     public CompletionStage<Result> getCacheData(String data){
         return cache.get(data).thenApply(i -> ok(i.get().toString()));
